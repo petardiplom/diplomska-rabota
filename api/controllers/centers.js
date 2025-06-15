@@ -11,3 +11,14 @@ export const getUserCenters = async (req, res, next) => {
     }
     
 }
+
+export const getCenterById = async (req, res, next) => {
+    try {
+        const { centerId } = req.params;
+        const center = await centerService.getCenterById(centerId);
+        return res.json(center);
+    } catch (error) {
+        next(error);
+    }
+    
+}

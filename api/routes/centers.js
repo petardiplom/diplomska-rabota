@@ -1,8 +1,10 @@
 import express from 'express';
-import { getUserCenters } from '../controllers/centers.js';
+import { getCenterById, getUserCenters } from '../controllers/centers.js';
+import fakeAuth from '../middlewares/fakeAuth.js';
 
 const router = express.Router();
 
-router.get('/centers', getUserCenters)
+router.get('/centers', fakeAuth, getUserCenters)
+router.get('/centers/:centerId', fakeAuth, getCenterById)
 
 export default router;

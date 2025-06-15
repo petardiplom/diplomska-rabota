@@ -7,11 +7,12 @@ import { useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
 const collapsedWidth = 70;
+const minimalPaths = ['/centers', '/profile']
 
 const Layout = ({ children }) => {
 
   const location = useLocation();
-  const isMinimal = location.pathname === '/centers';
+  const isMinimal = minimalPaths.includes(location.pathname);
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);

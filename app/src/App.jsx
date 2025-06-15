@@ -1,30 +1,20 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import Auth from './pages/Auth';
-import Dashboard from './pages/Dashboard';
-import Profile from './pages/Profile';
-import ProtectedLayout from './layouts/ProtectedLayout';
-import Calendar from './pages/Calendar';
-import Centers from './pages/Centers';
-import CenterLayout from './layouts/CenterLayout';
+import { useTheme } from '@mui/material';
+import { ToastContainer } from 'react-toastify';
+import AppRoutes from './routes/AppRoutes';
+import 'react-toastify/dist/ReactToastify.css';
+import { useAxiosCenterSetup } from './axios/useAxiosCenterSetup';
 
 function App() {
+  useAxiosCenterSetup();
+
+  const theme = useTheme();
+  const toastTheme = theme.palette.mode === 'dark' ? 'dark' : 'light';
 
   return (
-    <Routes>
-      <Route path="/" element={<Auth />} />
-
-      <Route element={<ProtectedLayout />}>
-        <Route path="/centers" element={<Centers />} />
-        <Route path="/profile" element={<Profile />} />
-
-        <Route path="/centers/:centerId" element={<CenterLayout />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="calendar" element={<Calendar />} />
-        </Route>
-        
-      </Route>
-      <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
+    <>
+    <AppRoutes />
+    <ToastContainer position="bottom-right"  theme={toastTheme} autoClose={3000} hideProgressBar={true} />
+    </>
   )
 }
 

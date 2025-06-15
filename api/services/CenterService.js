@@ -10,6 +10,11 @@ class CenterService {
         return centers.rows;
     };
 
+    async getCenterById(centerId) {
+        const center = await this.db.query('SELECT * FROM centers WHERE id = $1', [centerId]);
+        return center.rows[0] || null;
+    };
+
 };
 
 export const centerService = new CenterService(pool)
