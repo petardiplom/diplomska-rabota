@@ -30,7 +30,7 @@ export const useAddCenter = () => {
   return useMutation({
     mutationFn: (data) => api.post('/centers', data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: CENTERS_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: [CENTERS_QUERY_KEY] });
     },
   });
 };

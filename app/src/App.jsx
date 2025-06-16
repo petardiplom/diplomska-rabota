@@ -3,6 +3,7 @@ import { ToastContainer } from 'react-toastify';
 import AppRoutes from './routes/AppRoutes';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAxiosCenterSetup } from './axios/useAxiosCenterSetup';
+import GlobalModals from './modals/GlobalModels';
 
 function App() {
   useAxiosCenterSetup();
@@ -14,6 +15,7 @@ function App() {
     <>
     <AppRoutes />
     <ToastContainer position="bottom-right"  theme={toastTheme} autoClose={3000} hideProgressBar={true} />
+    <GlobalModals />
     </>
   )
 }

@@ -1,18 +1,29 @@
 import pool from '../db.js';
+import { BaseService } from './BaseService.js';
+import { Tables } from './tables.js';
 
-class CenterService {
+class CenterService extends BaseService {
     constructor(db) {
-        this.db = db;
+       super(db);
     }
 
     async getUserCenters(userId) {
-        const centers = await this.db.query('SELECT * FROM centers WHERE owner_id = $1', [userId]);
-        return centers.rows;
+        return this.findAllByField(Tables.Centers, 'owner_id', userId);
     };
 
     async getCenterById(centerId) {
-        const center = await this.db.query('SELECT * FROM centers WHERE id = $1', [centerId]);
-        return center.rows[0] || null;
+        return this.findById(Tables.Centers, centerId);
+    };
+
+    async addUserCenter(data) {
+
+        const allowedFields = [
+            'owner_id', 'name', 'email', 'phone', 'address', 'image_url',
+            'street', 'city', 'state', 'postal_code', 'country',
+            'latitude', 'longitude'
+        ];
+
+        return this.insert(Tables.Centers, data, allowedFields);
     };
 
 };
