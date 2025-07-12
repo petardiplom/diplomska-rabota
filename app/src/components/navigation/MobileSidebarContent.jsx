@@ -2,15 +2,12 @@ import React from 'react';
 import { Toolbar, Typography, IconButton, List, ListItem, ListItemIcon, ListItemText, ListItemButton } from '@mui/material';
 import { ChevronLeft, Dashboard as DashboardIcon, AccountCircle, Logout } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { getMinimalDrawerItems } from './MenuItems';
 
 const MobileSidebarContent = ({ handleDrawerToggle }) => {
   const navigate = useNavigate();
 
-  const drawerItems = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
-    { text: 'Profile', icon: <AccountCircle />, path: '/profile' },
-    { text: 'Logout', icon: <Logout />, path: '/logout' },
-  ];
+  const drawerItems = getMinimalDrawerItems();
 
   return (
     <>

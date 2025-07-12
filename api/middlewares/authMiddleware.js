@@ -1,4 +1,5 @@
-import admin from '../firebaseAdmin.js';
+import admin from "../admin/firebaseAdmin.js";
+import { userService } from "../services/UserService.js";
 
 export const authenticateUser = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -11,7 +12,9 @@ export const authenticateUser = async (req, res, next) => {
 
   try {
     const decodedToken = await admin.auth().verifyIdToken(token);
-    req.user = decodedToken;
+    const user =  await userService.getUserByFirebaseUid(decodedToken.user_id);
+    req.user = user;
+    req.firebaseUser = decodedToken;
     next();
   } catch (err) {
     console.error('Token verification failed', err);

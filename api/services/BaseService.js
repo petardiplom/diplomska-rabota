@@ -11,7 +11,7 @@ export class BaseService {
     }
 
     async findAllByField(table, field, value) {
-        const result = await this.db.query(`SELECT * FROM ${table} WHERE ${field} = $1`, [value]);
+        const result = await this.db.query(`SELECT * FROM ${table} WHERE ${field} = $1 ORDER BY id ASC`, [value]);
         return result.rows;
     }
 

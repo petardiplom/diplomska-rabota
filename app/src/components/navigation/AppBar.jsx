@@ -1,8 +1,8 @@
 import  { useState } from 'react';
 import { AppBar, IconButton, Toolbar, Typography, useTheme } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import ThemeToggle from '../components/ThemeToggle';
-import UserMenu from '../components/UserMenu';
+import ThemeToggle from '../ThemeToggle';
+import UserMenu from './UserMenu';
 
 const drawerWidth = 240;
 const collapsedWidth = 70;

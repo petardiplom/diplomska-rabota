@@ -7,11 +7,13 @@ export const requireCenterAccess = async (req, res, next) => {
     return res.status(400).json({ error: 'Missing X-Center-Id header' });
   }
 
+  // TODO FIX USER ID CHECK BELOW
+
   // Optional: validate center exists and user has access
   try {
     const result = await db.query(
       `SELECT * FROM centers WHERE id = $1 AND owner_id = $2`,
-      [centerId, req.user.uid] // or req.user.id if you map Firebase users to a local users table
+      [centerId, req.user.id] // or req.user.id if you map Firebase users to a local users table
     );
 
     if (result.rows.length === 0) {

@@ -1,4 +1,6 @@
 export const Tables = {
     Centers: 'centers',
-    Users: 'users'
+    Users: 'users',
+    Services: 'services',
+    Subservices: 'subservices',
 }

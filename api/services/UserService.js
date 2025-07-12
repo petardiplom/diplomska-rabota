@@ -15,6 +15,11 @@ class UserService {
         return customer.rows[0]
     }
 
+    async getUserByFirebaseUid(firebaseId){
+        const customer = await this.db.query('SELECT * FROM users WHERE firebase_uid = $1', [firebaseId]);
+        return customer.rows[0]
+    }
+
 };
 
 export const userService = new UserService(pool)

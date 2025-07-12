@@ -6,6 +6,8 @@ import ProtectedLayout from '../layouts/ProtectedLayout';
 import Calendar from '../pages/Calendar';
 import Centers from '../pages/Centers';
 import CenterLayout from '../layouts/CenterLayout';
+import Service from '../pages/Service';
+import ServiceClient from '../pages/ServiceClient';
 
 function AppRoutes() {
 
@@ -20,6 +22,7 @@ function AppRoutes() {
         <Route path="/centers/:centerId" element={<CenterLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="calendar" element={<Calendar />} />
+          <Route path='services' element={<ServiceClient /> } />
         </Route>
         
       </Route>

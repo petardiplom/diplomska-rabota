@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Box, CssBaseline, Drawer, useTheme, AppBar, IconButton, Toolbar, Typography } from '@mui/material';
-import SidebarContent from '../components/SidebarContent';
-import MobileSidebarContent from '../components/MobileSidebarContent';
-import CustomAppBar from '../components/AppBar';
+import SidebarContent from '../components/navigation/SidebarContent';
+import MobileSidebarContent from '../components/navigation/MobileSidebarContent';
+import CustomAppBar from '../components/navigation/AppBar';
 import { useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;

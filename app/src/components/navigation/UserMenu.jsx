@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Avatar, IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 const UserMenu = () => {
     const [anchorEl, setAnchorEl] = useState(null);
