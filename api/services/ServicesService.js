@@ -52,6 +52,11 @@ class ServicesService extends BaseService {
         return this.findAllByField(Tables.Subservices, 'service_id', serviceId);
     }
 
+    async editService(serviceId, data){
+        const allowedFields = ['name', 'description', 'color'];
+        return this.update(Tables.Services, data, allowedFields, 'id = $4', [serviceId]);
+    }
+
     async toggleServiceStatus(serviceId, status) {
 
         const updateSql = `UPDATE ${Tables.Services} SET active = $2 WHERE id = $1 RETURNING *`;

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'react-toastify'; 
+import { toast } from 'react-toastify';
 import api from '../../axios/axios';
 
 const SERVICES_QUERY_KEY = 'services';
@@ -26,10 +26,21 @@ export const useServiceById = (serviceId) => {
   });
 };
 
+export const useUpdateService = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ serviceId, data }) => api.patch(`/services/${serviceId}`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [SERVICES_QUERY_KEY] });
+      toast.success('Service status updated!');
+    },
+  });
+};
+
 export const useToggleService = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({serviceId, status}) => api.patch(`/services/${serviceId}`, {status}),
+    mutationFn: ({ serviceId, status }) => api.patch(`/services/${serviceId}/status`, { status }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [SERVICES_QUERY_KEY] });
       toast.success('Service status updated!');

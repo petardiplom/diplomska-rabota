@@ -8,10 +8,12 @@ import { getServices } from '../axios/ApiCalls';
 import DropDownButton from '../components/buttons/DropDownButton';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
+import { useModal } from '../contexts/ModalContext';
 
 const ServiceClient = () => {
 
     const { mutate } = useToggleService();
+    const { openModal } = useModal();
 
     const [search, setSearch] = useState(undefined);
     const [status, setStatus] = useState('all'); // 'all' | 'active' | 'inactive'
@@ -81,7 +83,7 @@ const ServiceClient = () => {
                                     {
                                         label: 'Edit',
                                         icon: <EditIcon />,
-                                        onClick: () => console.log('Edit clicked row', row),
+                                        onClick: () => openModal('editService', { service: row }),
                                     },
                                     { divider: true },
                                     {

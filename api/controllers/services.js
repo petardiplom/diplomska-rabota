@@ -47,5 +47,17 @@ export const toggleServiceStatus = async (req, res, next) => {
     }
 }
 
+export const editService = async (req, res, next) => {
+    try {
+        const { serviceId } = req.params;
+        const { name, description, color } = req.body;
+
+        const service = await servicesService.editService(serviceId, { name, description, color } );
+        return res.json(service);
+    } catch (error) {
+        next(error);
+    }
+}
+
 
 

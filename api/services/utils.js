@@ -1,15 +1,37 @@
 export function buildInsertQuery(table, data, allowedFields) {
-    const fields = allowedFields.filter(field => data[field] != null); // skip null & undefined
-    const values = fields.map(field => data[field]);
-    const placeholders = fields.map((_, i) => `$${i + 1}`).join(', ');
+  const fields = allowedFields.filter(field => data[field] != null); // skip null & undefined
+  const values = fields.map(field => data[field]);
+  const placeholders = fields.map((_, i) => `$${i + 1}`).join(', ');
 
-    const query = `
+  const query = `
         INSERT INTO ${table} (${fields.join(', ')})
         VALUES (${placeholders})
         RETURNING *;
     `;
 
-    return { query, values };
+  return { query, values };
+}
+
+export function buildUpdateQuery(table, data, allowedFields, whereClause, whereValues, returning = '*') {
+  const fields = allowedFields.filter(field => data[field] != null);
+  if (fields.length === 0) {
+    throw new Error('No valid fields provided to update');
+  }
+
+  const setClauses = fields.map((field, i) => `${field} = $${i + 1}`).join(', ');
+
+  const setValues = fields.map(field => data[field]);
+
+  const values = [...setValues, ...whereValues];
+
+  const query = `
+    UPDATE ${table}
+    SET ${setClauses}
+    WHERE ${whereClause}
+    RETURNING ${returning};
+  `;
+
+  return { query, values };
 }
 
 export function buildPaginatedQuery({

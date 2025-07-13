@@ -1,4 +1,4 @@
-import { buildInsertQuery } from "./utils.js";
+import { buildInsertQuery, buildUpdateQuery } from "./utils.js";
 
 export class BaseService {
     constructor(db) {
@@ -18,6 +18,12 @@ export class BaseService {
     async insert(table, data, allowedFields, returning = '*') {
         const { query, values } = buildInsertQuery(table, data, allowedFields, returning);
 
+        const result = await this.db.query(query, values);
+        return result.rows[0];
+    }
+
+    async update(table, data, allowedFields, whereClause, whereValues, returning = '*') {
+        const { query, values } = buildUpdateQuery(table, data, allowedFields, whereClause, whereValues, returning);
         const result = await this.db.query(query, values);
         return result.rows[0];
     }
