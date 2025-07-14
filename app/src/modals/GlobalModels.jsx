@@ -1,11 +1,13 @@
-import { useModal } from '../contexts/ModalContext';
-import AddCenterModal from './AddCenterModal';
-import ConfirmDeleteModal from './ConfirmDeleteModal';
-import EditServiceModal from './EditServiceModal';
+import { useModal } from "../contexts/ModalContext";
+import AddCenterModal from "./AddCenterModal";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import EditServiceModal from "./EditServiceModal";
+import EditSubserviceModal from "./EditSubserviceModal";
 
 const MODAL_COMPONENTS = {
   addCenter: AddCenterModal,
   editService: EditServiceModal,
+  editSubservice: EditSubserviceModal,
   confirmDelete: ConfirmDeleteModal,
 };
 

@@ -19,19 +19,22 @@ import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { useCenter } from "../../contexts/CenterContext";
 
-export default function ClientTable({
-  columns,
-  queryFn,
-  queryKeyPrefix = "table",
-  customFilters,
-  filters = {},
-  filterFn,
-  rowsPerPageOptions = [5, 10],
-  expandable = false,
-  fetchChildren,
-  renderChildren,
-  expandIconPosition = "left",
-}) {
+export default React.forwardRef(function ClientTable(
+  {
+    columns,
+    queryFn,
+    queryKeyPrefix = "table",
+    customFilters,
+    filters = {},
+    filterFn,
+    rowsPerPageOptions = [5, 10],
+    expandable = false,
+    fetchChildren,
+    renderChildren,
+    expandIconPosition = "left",
+  },
+  ref
+) {
   const { centerId } = useCenter();
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(rowsPerPageOptions[0]);
@@ -49,6 +52,7 @@ export default function ClientTable({
     queryKey: [queryKeyPrefix, centerId],
     queryFn,
     keepPreviousData: true,
+    enabled: !!centerId,
   });
 
   const handlePageChange = (_, newPage) => setPage(newPage);
@@ -69,6 +73,21 @@ export default function ClientTable({
     }
     setPage(0);
   };
+
+  const handleRefetchChildren = async (rowId) => {
+    console.log("CALLLED!!!");
+    if (fetchChildren && expandedRowId === rowId) {
+      const row = data.find((r) => r.id === rowId);
+      if (row) {
+        const children = await fetchChildren(row);
+        setChildrenData((prev) => ({ ...prev, [rowId]: children }));
+      }
+    }
+  };
+
+  React.useImperativeHandle(ref, () => ({
+    refetchChildren: handleRefetchChildren,
+  }));
 
   const toggleExpand = async (row) => {
     const isExpanded = expandedRowId === row.id;
@@ -301,4 +320,4 @@ export default function ClientTable({
       </Box>
     </Paper>
   );
-}
+});

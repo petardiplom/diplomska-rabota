@@ -11,7 +11,7 @@ import {
   TableCell,
 } from "@mui/material";
 import api from "../axios/axios";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   useArchiveService,
   useToggleService,
@@ -25,6 +25,7 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import { useModal } from "../contexts/ModalContext";
 
 const ServiceClient = () => {
+  const tableRef = useRef();
   const { mutate } = useToggleService();
   const { mutate: archiveService } = useArchiveService();
   const { openModal } = useModal();
@@ -56,9 +57,16 @@ const ServiceClient = () => {
     });
   };
 
+  const handleChildUpdated = (parentId) => {
+    if (tableRef.current) {
+      tableRef.current.refetchChildren(parentId);
+    }
+  };
+
   return (
     <>
       <ClientTable
+        ref={tableRef}
         queryKeyPrefix="services"
         filterFn={filterServices}
         columns={[
@@ -158,7 +166,7 @@ const ServiceClient = () => {
           const res = await api.get(`/services/${row.id}/subservices`);
           return res.data;
         }}
-        renderChildren={(children) => (
+        renderChildren={(children, row) => (
           <Table size="small">
             <TableHead>
               <TableRow>
@@ -167,6 +175,7 @@ const ServiceClient = () => {
                 <TableCell>Description</TableCell>
                 <TableCell>Price</TableCell>
                 <TableCell>Date</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -177,6 +186,29 @@ const ServiceClient = () => {
                   <TableCell>{child.description}</TableCell>
                   <TableCell>{printPrice(child.price)}</TableCell>
                   <TableCell>{printDate(child.created_at)}</TableCell>
+                  <TableCell>
+                    <DropDownButton
+                      variant="standard"
+                      buttonLabel="Actions"
+                      options={[
+                        {
+                          label: "Edit",
+                          icon: <EditIcon />,
+                          onClick: () =>
+                            openModal("editSubservice", {
+                              subservice: child,
+                              refetchChildren: () => handleChildUpdated(row.id),
+                            }),
+                        },
+                        { divider: true },
+                        {
+                          label: "Archive",
+                          icon: <ArchiveIcon />,
+                          // onClick: () => handleArchiveService(child.id),
+                        },
+                      ]}
+                    />
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
