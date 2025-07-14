@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 import {
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  TablePagination, Paper, Box, CircularProgress, TableSortLabel
-} from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TablePagination,
+  Paper,
+  Box,
+  CircularProgress,
+  TableSortLabel,
+} from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 
 export default function ServerTable({
   columns,
   queryFn,
-  queryKeyPrefix = 'table',
+  queryKeyPrefix = "table",
   customFilters,
   filters = {},
   rowsPerPageOptions = [5, 10, 25, 50],
@@ -16,22 +25,20 @@ export default function ServerTable({
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(rowsPerPageOptions[0]);
   const [sortBy, setSortBy] = useState(null);
-  const [sortOrder, setSortOrder] = useState('asc');
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const handleSort = (accessor) => {
-    const col = columns.find(c => c.accessor === accessor);
+    const col = columns.find((c) => c.accessor === accessor);
     if (!col?.sortable) return;
 
     if (sortBy === accessor) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
       setSortBy(accessor);
-      setSortOrder('asc');
+      setSortOrder("asc");
     }
     setPage(0); // reset to first page
   };
-
-  console.log("FILTERS", filters);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: [queryKeyPrefix, page, limit, filters, sortBy, sortOrder],
@@ -51,34 +58,36 @@ export default function ServerTable({
   return (
     <Paper elevation={3}>
       <Box p={2}>
-        {customFilters && (
-          <Box mb={2}>
-            {customFilters}
-          </Box>
-        )}
+        {customFilters && <Box mb={2}>{customFilters}</Box>}
 
         <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
-                {columns.filter(col => !col.hidden).map(col => (
-                  <TableCell
-                    key={col.accessor}
-                    sortDirection={sortBy === col.accessor ? sortOrder : false}
-                  >
-                    {col.sortable ? (
-                      <TableSortLabel
-                        active={sortBy === col.accessor}
-                        direction={sortBy === col.accessor ? sortOrder : 'asc'}
-                        onClick={() => handleSort(col.accessor)}
-                      >
-                        {col.label}
-                      </TableSortLabel>
-                    ) : (
-                      col.label
-                    )}
-                  </TableCell>
-                ))}
+                {columns
+                  .filter((col) => !col.hidden)
+                  .map((col) => (
+                    <TableCell
+                      key={col.accessor}
+                      sortDirection={
+                        sortBy === col.accessor ? sortOrder : false
+                      }
+                    >
+                      {col.sortable ? (
+                        <TableSortLabel
+                          active={sortBy === col.accessor}
+                          direction={
+                            sortBy === col.accessor ? sortOrder : "asc"
+                          }
+                          onClick={() => handleSort(col.accessor)}
+                        >
+                          {col.label}
+                        </TableSortLabel>
+                      ) : (
+                        col.label
+                      )}
+                    </TableCell>
+                  ))}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -97,11 +106,15 @@ export default function ServerTable({
               ) : results.length > 0 ? (
                 results.map((row, idx) => (
                   <TableRow key={idx}>
-                    {columns.filter(col => !col.hidden).map(col => (
-                      <TableCell key={col.accessor}>
-                        {col.render ? col.render(row[col.accessor], row) : row[col.accessor]}
-                      </TableCell>
-                    ))}
+                    {columns
+                      .filter((col) => !col.hidden)
+                      .map((col) => (
+                        <TableCell key={col.accessor}>
+                          {col.render
+                            ? col.render(row[col.accessor], row)
+                            : row[col.accessor]}
+                        </TableCell>
+                      ))}
                   </TableRow>
                 ))
               ) : (

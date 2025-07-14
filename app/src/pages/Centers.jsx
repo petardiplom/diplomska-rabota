@@ -1,5 +1,5 @@
 import { Box, Button, Container } from '@mui/material';
-import { useAddCenter, useCenters } from '../hooks/apiHooks/useCenters';
+import { useCenters } from '../hooks/apiHooks/useCenters';
 import CenterCardList from '../components/center/CenterCardList';
 import { useState } from 'react';
 import { useModal } from '../contexts/ModalContext';

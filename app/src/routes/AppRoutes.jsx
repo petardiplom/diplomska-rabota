@@ -6,8 +6,8 @@ import ProtectedLayout from '../layouts/ProtectedLayout';
 import Calendar from '../pages/Calendar';
 import Centers from '../pages/Centers';
 import CenterLayout from '../layouts/CenterLayout';
-import Service from '../pages/Service';
 import ServiceClient from '../pages/ServiceClient';
+import ArchivedServices from '../pages/archived/ArchivedServices';
 
 function AppRoutes() {
 
@@ -23,6 +23,7 @@ function AppRoutes() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="calendar" element={<Calendar />} />
           <Route path='services' element={<ServiceClient /> } />
+          <Route path='services/archived' element={<ArchivedServices /> } />
         </Route>
         
       </Route>

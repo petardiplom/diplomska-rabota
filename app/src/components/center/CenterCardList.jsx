@@ -1,21 +1,11 @@
-import React from 'react';
-import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  Avatar,
-  Pagination,
-  useMediaQuery,
-} from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import CenterCardItem from './CenterCardItem';
+import { Box, Pagination, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import CenterCardItem from "./CenterCardItem";
 
 const CenterCardList = ({ centers, page, totalPages, onPageChange }) => {
   const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
-  const isMedium = useMediaQuery(theme.breakpoints.up('md'));
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMedium = useMediaQuery(theme.breakpoints.up("md"));
 
   const columns = isSmall ? 1 : isMedium ? 4 : 2;
 
@@ -26,7 +16,7 @@ const CenterCardList = ({ centers, page, totalPages, onPageChange }) => {
         gridTemplateColumns={`repeat(${columns}, 1fr)`}
         gap={3}
       >
-        {centers.map(center => (
+        {centers.map((center) => (
           <CenterCardItem key={center.id} center={center} />
         ))}
       </Box>
@@ -37,7 +27,7 @@ const CenterCardList = ({ centers, page, totalPages, onPageChange }) => {
           page={page}
           onChange={(e, value) => onPageChange(value)}
           color="primary"
-          size={isSmall ? 'small' : 'medium'}
+          size={isSmall ? "small" : "medium"}
         />
       </Box>
     </Box>

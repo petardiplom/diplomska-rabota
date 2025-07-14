@@ -1,10 +1,12 @@
 import { useModal } from '../contexts/ModalContext';
 import AddCenterModal from './AddCenterModal';
+import ConfirmDeleteModal from './ConfirmDeleteModal';
 import EditServiceModal from './EditServiceModal';
 
 const MODAL_COMPONENTS = {
   addCenter: AddCenterModal,
-  editService: EditServiceModal
+  editService: EditServiceModal,
+  confirmDelete: ConfirmDeleteModal,
 };
 
 const GlobalModals = () => {

@@ -1,16 +1,15 @@
-import { useState } from 'react';
-import { Box, CssBaseline, Drawer, useTheme, AppBar, IconButton, Toolbar, Typography } from '@mui/material';
-import SidebarContent from '../components/navigation/SidebarContent';
-import MobileSidebarContent from '../components/navigation/MobileSidebarContent';
-import CustomAppBar from '../components/navigation/AppBar';
-import { useLocation } from 'react-router-dom';
+import { useState } from "react";
+import { Box, CssBaseline, Drawer, useTheme } from "@mui/material";
+import SidebarContent from "../components/navigation/SidebarContent";
+import MobileSidebarContent from "../components/navigation/MobileSidebarContent";
+import CustomAppBar from "../components/navigation/AppBar";
+import { useLocation } from "react-router-dom";
 
 const drawerWidth = 240;
 const collapsedWidth = 70;
-const minimalPaths = ['/centers', '/profile']
+const minimalPaths = ["/centers", "/profile"];
 
 const Layout = ({ children }) => {
-
   const location = useLocation();
   const isMinimal = minimalPaths.includes(location.pathname);
 
@@ -22,12 +21,10 @@ const Layout = ({ children }) => {
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
 
-      <CustomAppBar sidebarOpen={sidebarOpen}/>
-
-
+      <CustomAppBar sidebarOpen={sidebarOpen} />
 
       <Box component="nav" sx={{ flexShrink: 0 }}>
         {/* Mobile Drawer */}
@@ -37,8 +34,8 @@ const Layout = ({ children }) => {
           onClose={handleDrawerToggle}
           ModalProps={{ keepMounted: true }}
           sx={{
-            display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': {
+            display: { xs: "block", md: "none" },
+            "& .MuiDrawer-paper": {
               width: drawerWidth,
               backgroundColor: theme.palette.background.paper,
             },
@@ -51,21 +48,25 @@ const Layout = ({ children }) => {
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: 'none', md: 'block' },
-            '& .MuiDrawer-paper': {
+            display: { xs: "none", md: "block" },
+            "& .MuiDrawer-paper": {
               width: sidebarOpen ? drawerWidth : collapsedWidth,
-              overflowX: 'hidden',
+              overflowX: "hidden",
               backgroundColor: theme.palette.background.paper,
-              transition: theme.transitions.create('width', {
+              transition: theme.transitions.create("width", {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.standard,
               }),
-              whiteSpace: 'nowrap',
+              whiteSpace: "nowrap",
             },
           }}
           open
         >
-          <SidebarContent sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} isMinimal={isMinimal}/>
+          <SidebarContent
+            sidebarOpen={sidebarOpen}
+            toggleSidebar={toggleSidebar}
+            isMinimal={isMinimal}
+          />
         </Drawer>
       </Box>
 
@@ -77,7 +78,7 @@ const Layout = ({ children }) => {
           p: 3,
           mt: 8,
           ml: { md: `${sidebarOpen ? drawerWidth : collapsedWidth}px` },
-          transition: theme.transitions.create(['margin', 'width'], {
+          transition: theme.transitions.create(["margin", "width"], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
           }),
