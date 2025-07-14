@@ -49,7 +49,6 @@ export function buildPaginatedQuery({
 
   // Add filter conditions (e.g., status)
   for (const [key, value] of Object.entries(where)) {
-    console.log("VALUE", value);
     if (value !== undefined && value !== '') {
       values.push(value);
       whereClauses.push(`${key} = $${values.length}`);

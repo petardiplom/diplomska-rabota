@@ -10,8 +10,15 @@ export class BaseService {
         return result.rows[0] || null;
     }
 
-    async findAllByField(table, field, value) {
-        const result = await this.db.query(`SELECT * FROM ${table} WHERE ${field} = $1 ORDER BY id ASC`, [value]);
+    async findAllByField(table, field, value, ignoreArchived = false) {
+
+        let sql = `SELECT * FROM ${table} WHERE ${field} = $1 ORDER BY id ASC`
+
+        if(ignoreArchived){
+            sql = `SELECT * FROM ${table} WHERE ${field} = $1 AND archived_at IS NULL ORDER BY id ASC`
+        }
+        
+        const result = await this.db.query(sql, [value]);
         return result.rows;
     }
 

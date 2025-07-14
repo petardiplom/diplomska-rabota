@@ -18,6 +18,18 @@ export const getServicesByCenter = async (req, res, next) => {
 
 }
 
+export const getArchivedServicesByCenter = async (req, res, next) => {
+    try {
+        const center = req.center;
+        const response = await servicesService.getArchivedCenterServices(center.id);
+
+        return res.json(response);
+    } catch (error) {
+        next(error);
+    }
+
+}
+
 export const getServiceSubservices = async (req, res, next) => {
     try {
         const { serviceId } = req.params;
@@ -53,6 +65,28 @@ export const editService = async (req, res, next) => {
         const { name, description, color } = req.body;
 
         const service = await servicesService.editService(serviceId, { name, description, color } );
+        return res.json(service);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const archiveService = async (req, res, next) => {
+    try {
+        const { serviceId } = req.params;
+
+        const service = await servicesService.archiveService(serviceId);
+        return res.json(service);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const restoreService = async (req, res, next) => {
+    try {
+        const { serviceId } = req.params;
+
+        const service = await servicesService.restoreService(serviceId);
         return res.json(service);
     } catch (error) {
         next(error);

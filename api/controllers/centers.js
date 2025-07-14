@@ -4,7 +4,6 @@ import { centerService } from "../services/CenterService.js"
 // GET
 export const getUserCenters = async (req, res, next) => {
     try {
-        console.log(req.user);
         const centers = await centerService.getUserCenters(req.user.id);
         const response = {
             results: centers,

@@ -45,7 +45,13 @@ class ServicesService extends BaseService {
     // };
 
     async getCenterServices(centerId){
-        return this.findAllByField(Tables.Services, 'center_id', centerId);
+        return this.findAllByField(Tables.Services, 'center_id', centerId, true);
+    }
+
+      async getArchivedCenterServices(centerId){
+        const sql = `SELECT * FROM ${Tables.Services} WHERE center_id = $1 AND archived_at IS NOT NULL ORDER BY id ASC`;
+        const response = await this.db.query(sql, [centerId]);
+        return response.rows;
     }
 
     async getServiceSubservices(serviceId){
@@ -61,6 +67,35 @@ class ServicesService extends BaseService {
 
         const updateSql = `UPDATE ${Tables.Services} SET active = $2 WHERE id = $1 RETURNING *`;
         const result = await this.db.query(updateSql, [serviceId, status]);
+
+        if (result.rowCount === 0) {
+            const error = new Error('Service not found');
+            error.statusCode = 404;
+            throw error;
+        }
+
+        return result.rows[0];
+    };
+
+    async archiveService(serviceId) {
+
+        const archivedAt = new Date();
+        const updateSql = `UPDATE ${Tables.Services} SET archived_at = $2, active = false WHERE id = $1 RETURNING *`;
+        const result = await this.db.query(updateSql, [serviceId, archivedAt]);
+
+        if (result.rowCount === 0) {
+            const error = new Error('Service not found');
+            error.statusCode = 404;
+            throw error;
+        }
+
+        return result.rows[0];
+    };
+
+    async restoreService(serviceId) {
+
+        const updateSql = `UPDATE ${Tables.Services} SET archived_at = null WHERE id = $1 RETURNING *`;
+        const result = await this.db.query(updateSql, [serviceId]);
 
         if (result.rowCount === 0) {
             const error = new Error('Service not found');
