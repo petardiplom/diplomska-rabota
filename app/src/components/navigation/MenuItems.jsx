@@ -6,6 +6,7 @@ import {
   Apps,
   RestoreFromTrash,
   Recycling,
+  Schedule,
 } from "@mui/icons-material";
 
 export const getDrawerItems = (centerId) => {
@@ -37,6 +38,11 @@ export const getDrawerItems = (centerId) => {
           icon: <Recycling />,
         },
       ],
+    },
+    {
+      text: "Schedule",
+      icon: <Schedule />,
+      path: centerId ? `/centers/${centerId}/schedule` : "/centers",
     },
     { text: "Logout", icon: <Logout />, path: "/logout" },
   ];
