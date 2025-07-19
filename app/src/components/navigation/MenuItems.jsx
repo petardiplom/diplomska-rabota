@@ -7,6 +7,7 @@ import {
   RestoreFromTrash,
   Recycling,
   Schedule,
+  Hub,
 } from "@mui/icons-material";
 
 export const getDrawerItems = (centerId) => {
@@ -27,6 +28,11 @@ export const getDrawerItems = (centerId) => {
       path: centerId ? `/centers/${centerId}/services` : "/centers",
     },
     {
+      text: "Schedule",
+      icon: <Schedule />,
+      path: centerId ? `/centers/${centerId}/schedule` : "/centers",
+    },
+    {
       text: "Archived",
       icon: <RestoreFromTrash />,
       children: [
@@ -39,18 +45,12 @@ export const getDrawerItems = (centerId) => {
         },
       ],
     },
-    {
-      text: "Schedule",
-      icon: <Schedule />,
-      path: centerId ? `/centers/${centerId}/schedule` : "/centers",
-    },
-    { text: "Logout", icon: <Logout />, path: "/logout" },
   ];
 };
 
 export const getMinimalDrawerItems = () => {
   return [
-    { text: "Centers", icon: <AccountCircle />, path: "/centers" },
+    { text: "Centers", icon: <Hub />, path: "/centers" },
     { text: "Profile", icon: <AccountCircle />, path: "/profile" },
     { text: "Logout", icon: <Logout />, path: "/logout" },
   ];

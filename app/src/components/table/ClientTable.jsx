@@ -9,7 +9,6 @@ import {
   TablePagination,
   Paper,
   Box,
-  CircularProgress,
   TableSortLabel,
   IconButton,
   Collapse,
@@ -18,6 +17,8 @@ import {
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { useCenter } from "../../contexts/CenterContext";
+import LoadingComponent from "../LoadingComponent";
+import ErrorComponent from "../ErrorComponent";
 
 export default React.forwardRef(function ClientTable(
   {
@@ -75,7 +76,6 @@ export default React.forwardRef(function ClientTable(
   };
 
   const handleRefetchChildren = async (rowId) => {
-    console.log("CALLLED!!!");
     if (fetchChildren && expandedRowId === rowId) {
       const row = data.find((r) => r.id === rowId);
       if (row) {
@@ -134,43 +134,11 @@ export default React.forwardRef(function ClientTable(
   }, [sortedData, page, limit]);
 
   if (isLoading) {
-    return (
-      <Paper elevation={3}>
-        <Box
-          p={4}
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="200px"
-        >
-          <CircularProgress size={32} />
-        </Box>
-      </Paper>
-    );
+    return <LoadingComponent />;
   }
 
   if (isError) {
-    return (
-      <Paper elevation={3}>
-        <Box
-          p={4}
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="200px"
-        >
-          <Box textAlign="center">
-            <div>⚠️ Failed to load data.</div>
-            <div style={{ fontSize: 14, color: "#666" }}>
-              Please try again later.
-            </div>
-            <Box mt={2}>
-              <button onClick={() => refetch()}>Retry</button>
-            </Box>
-          </Box>
-        </Box>
-      </Paper>
-    );
+    return <ErrorComponent refetch={refetch} />;
   }
 
   return (

@@ -10,7 +10,6 @@ import {
   FormControlLabel,
   Checkbox,
   Stack,
-  CircularProgress,
 } from "@mui/material";
 import {
   browserLocalPersistence,
@@ -24,6 +23,7 @@ import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../contexts/AuthContext";
+import Spinner from "../components/spinner/Spinner";
 
 const Auth = () => {
   const [form, setForm] = useState("login"); // login | signup | forgot
@@ -98,7 +98,7 @@ const Auth = () => {
   if (authLoading) {
     return (
       <Box sx={{ mt: 10, display: "flex", justifyContent: "center" }}>
-        <CircularProgress />
+        <Spinner />
       </Box>
     );
   }

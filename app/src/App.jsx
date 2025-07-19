@@ -1,23 +1,28 @@
-import { useTheme } from '@mui/material';
-import { ToastContainer } from 'react-toastify';
-import AppRoutes from './routes/AppRoutes';
-import 'react-toastify/dist/ReactToastify.css';
-import { useAxiosCenterSetup } from './axios/useAxiosCenterSetup';
-import GlobalModals from './modals/GlobalModels';
+import { useTheme } from "@mui/material";
+import { ToastContainer } from "react-toastify";
+import AppRoutes from "./routes/AppRoutes";
+import "react-toastify/dist/ReactToastify.css";
+import { useAxiosCenterSetup } from "./axios/useAxiosCenterSetup";
+import GlobalModals from "./modals/GlobalModels";
 
 function App() {
   useAxiosCenterSetup();
 
   const theme = useTheme();
-  const toastTheme = theme.palette.mode === 'dark' ? 'dark' : 'light';
+  const toastTheme = theme.palette.mode === "dark" ? "dark" : "light";
 
   return (
     <>
-    <AppRoutes />
-    <ToastContainer position="bottom-right"  theme={toastTheme} autoClose={3000} hideProgressBar={true} />
-    <GlobalModals />
+      <AppRoutes />
+      <ToastContainer
+        position="bottom-right"
+        theme={toastTheme}
+        autoClose={3000}
+        hideProgressBar={true}
+      />
+      <GlobalModals />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
