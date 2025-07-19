@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -10,23 +10,28 @@ import {
   Divider,
   Grid,
   Button,
-  CardActions,
-  Paper,
-  CircularProgress,
+  Chip,
 } from "@mui/material";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
-import { useCenterSchedule } from "../hooks/apiHooks/useCenterSchedule";
-
-function timeStringToDate(timeStr) {
-  if (!timeStr) return null;
-  const [hours, minutes, seconds] = timeStr.split(":").map(Number);
-  return new Date(0, 0, 0, hours, minutes, seconds || 0);
-}
+import {
+  useCenterSchedule,
+  useUpdateCenterSchedule,
+} from "../../hooks/apiHooks/useCenterSchedule";
+import LoadingComponent from "../../components/LoadingComponent";
+import ErrorComponent from "../../components/ErrorComponent";
+import isEqual from "fast-deep-equal";
+import cloneDeep from "lodash.clonedeep";
+import MyTimePicker from "../../components/forms/MyTimePicker";
+import {
+  convertToDate,
+  convertToString,
+  validateSchedule,
+} from "./scheduleUtils";
+import { toast } from "react-toastify";
 
 const dayNames = [
   "Monday",
@@ -40,24 +45,18 @@ const dayNames = [
 
 const Schedule = () => {
   const [schedule, setSchedule] = useState([]);
+  const [original, setOriginal] = useState([]);
+  const [errors, setErrors] = useState([]);
 
   const { data, isLoading, isError, refetch } = useCenterSchedule();
+  const { mutate, isLoading: updateLoading } = useUpdateCenterSchedule();
 
   useEffect(() => {
     if (data) {
-      const populated = data.map((day) => {
-        return {
-          ...day,
-          is_closed: day.is_closed,
-          work_start: day.work_start ? timeStringToDate(day.work_start) : null,
-          work_end: day.work_end ? timeStringToDate(day.work_end) : null,
-          breaks: day.breaks.map((brk) => ({
-            break_start: timeStringToDate(brk.break_start),
-            break_end: timeStringToDate(brk.break_end),
-          })),
-        };
-      });
+      const populated = convertToDate(data);
       setSchedule(populated);
+      const clone = cloneDeep(populated);
+      setOriginal(clone);
     }
   }, [data]);
 
@@ -85,48 +84,42 @@ const Schedule = () => {
     setSchedule(newSchedule);
   };
 
-  if (isLoading) {
-    return (
-      <Paper elevation={3}>
-        <Box
-          p={4}
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="200px"
-        >
-          <CircularProgress size={32} />
-        </Box>
-      </Paper>
-    );
+  const handleSave = () => {
+    const converted = convertToString(schedule);
+    const { allErrors, hasAnyError } = validateSchedule(converted);
+    setErrors(allErrors);
+
+    if (hasAnyError) {
+      toast.warn("Invalid input!");
+      return;
+    }
+
+    mutate({ data: converted });
+  };
+
+  if (isLoading || updateLoading) {
+    return <LoadingComponent />;
   }
 
   if (isError) {
-    return (
-      <Paper elevation={3}>
-        <Box
-          p={4}
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="200px"
-        >
-          <Box textAlign="center">
-            <div>⚠️ Failed to load data.</div>
-            <div style={{ fontSize: 14, color: "#666" }}>
-              Please try again later.
-            </div>
-            <Box mt={2}>
-              <button onClick={() => refetch()}>Retry</button>
-            </Box>
-          </Box>
-        </Box>
-      </Paper>
-    );
+    return <ErrorComponent refetch={refetch} />;
   }
+
+  const scheduleChanged = isEqual(schedule, original);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <Box pt={2} pb={2} display="flex" alignItems="center">
+        <Typography variant="h4">Schedule</Typography>
+        {!scheduleChanged && (
+          <Chip
+            style={{ marginLeft: 8, marginTop: 6 }}
+            label="Unsaved changes"
+            color="warning"
+            size="small"
+          />
+        )}
+      </Box>
       <Box
         display="grid"
         gridTemplateColumns="repeat(auto-fill, minmax(320px, 1fr))"
@@ -177,7 +170,7 @@ const Schedule = () => {
                   display="flex"
                   flexDirection="column"
                   alignItems="center"
-                  mt={3}
+                  mt={4}
                 >
                   <EventBusyIcon color="disabled" sx={{ fontSize: 64 }} />
                   <Typography variant="h6" color="text.secondary" mt={1}>
@@ -187,25 +180,21 @@ const Schedule = () => {
               ) : (
                 <>
                   <Box display="flex" alignItems="center" gap={2} mb={3} mt={3}>
-                    <TimePicker
+                    <MyTimePicker
                       label="Start"
                       value={day.work_start}
                       onChange={(newValue) =>
                         handleDayChange(i, { ...day, work_start: newValue })
                       }
-                      slotProps={{
-                        textField: { variant: "outlined", size: "small" },
-                      }}
+                      error={errors[i]?.work_start}
                     />
-                    <TimePicker
+                    <MyTimePicker
                       label="End"
                       value={day.work_end}
                       onChange={(newValue) =>
                         handleDayChange(i, { ...day, work_end: newValue })
                       }
-                      slotProps={{
-                        textField: { variant: "outlined", size: "small" },
-                      }}
+                      error={errors[i]?.work_end}
                     />
                   </Box>
 
@@ -219,6 +208,7 @@ const Schedule = () => {
                     <Typography variant="subtitle2">Breaks</Typography>
                     <IconButton
                       size="small"
+                      disabled={day.breaks.length >= 2}
                       onClick={() => addBreak(i)}
                       color="primary"
                     >
@@ -230,36 +220,32 @@ const Schedule = () => {
                     <Grid
                       container
                       spacing={1}
-                      alignItems="center"
+                      alignItems="start"
                       key={j}
                       sx={{ mb: 1 }}
                       gap={2}
                     >
                       <Grid size={5}>
-                        <TimePicker
+                        <MyTimePicker
                           label="From"
                           value={brk.break_start}
                           onChange={(val) =>
                             handleBreakChange(i, j, "break_start", val)
                           }
-                          slotProps={{
-                            textField: { variant: "outlined", size: "small" },
-                          }}
+                          error={errors[i]?.breaks[j]?.break_start}
                         />
                       </Grid>
                       <Grid size={5}>
-                        <TimePicker
+                        <MyTimePicker
                           label="To"
                           value={brk.break_end}
                           onChange={(val) =>
                             handleBreakChange(i, j, "break_end", val)
                           }
-                          slotProps={{
-                            textField: { variant: "outlined", size: "small" },
-                          }}
+                          error={errors[i]?.breaks[j]?.break_end}
                         />
                       </Grid>
-                      <Grid size={1}>
+                      <Grid size={1} mt={0.8}>
                         <IconButton
                           size="small"
                           onClick={() => removeBreak(i, j)}
@@ -272,13 +258,18 @@ const Schedule = () => {
                 </>
               )}
             </CardContent>
-            <CardActions>
-              <Box ml="auto">
-                <Button size="small">Save</Button>
-              </Box>
-            </CardActions>
           </Card>
         ))}
+      </Box>
+      <Box display="flex" justifyContent="flex-end" mt={3} pl={10} pr={10}>
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={scheduleChanged}
+          onClick={handleSave}
+        >
+          Save Schedule
+        </Button>
       </Box>
     </LocalizationProvider>
   );

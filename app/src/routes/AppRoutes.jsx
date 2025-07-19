@@ -8,7 +8,7 @@ import Centers from "../pages/Centers";
 import CenterLayout from "../layouts/CenterLayout";
 import ServiceClient from "../pages/ServiceClient";
 import ArchivedServices from "../pages/archived/ArchivedServices";
-import Schedule from "../pages/Schedule";
+import Schedule from "../pages/schedule/Schedule";
 
 function AppRoutes() {
   return (

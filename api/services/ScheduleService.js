@@ -34,6 +34,33 @@ class ScheduleService extends BaseService {
 
     return response.rows;
   }
+
+  async updateCenterSchedule(schedule) {
+    await this.withTransaction(async (client) => {
+      const updateSql = `UPDATE ${Tables.Schedules} SET work_start = $1, work_end = $2, is_closed = $3 WHERE id = $4`;
+      const deleteBreakSql = `DELETE FROM ${Tables.ScheduleBreaks} WHERE schedule_id = $1`;
+      const insertBreakSql = `INSERT INTO ${Tables.ScheduleBreaks} (schedule_id, break_start, break_end) VALUES ($1, $2, $3)`;
+
+      for (const day of schedule) {
+        await client.query(updateSql, [
+          day.work_start,
+          day.work_end,
+          day.is_closed,
+          day.id,
+        ]);
+        await client.query(deleteBreakSql, [day.id]);
+        for (const brk of day.breaks) {
+          await client.query(insertBreakSql, [
+            day.id,
+            brk.break_start,
+            brk.break_end,
+          ]);
+        }
+      }
+
+      return true;
+    });
+  }
 }
 
 export const scheduleService = new ScheduleService(pool);

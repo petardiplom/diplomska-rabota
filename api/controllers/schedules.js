@@ -11,16 +11,12 @@ export const getCenterSchedule = async (req, res, next) => {
   }
 };
 
-// // POST
-
-// export const addUserCenter = async (req, res, next) => {
-//   try {
-//     const centers = await centerService.addUserCenter({
-//       owner_id: req.user.id,
-//       ...req.body,
-//     });
-//     return res.json(centers);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+// PATCH
+export const updateCenterSchedule = async (req, res, next) => {
+  try {
+    const schedule = await scheduleService.updateCenterSchedule(req.body);
+    return res.json(schedule);
+  } catch (error) {
+    next(error);
+  }
+};
