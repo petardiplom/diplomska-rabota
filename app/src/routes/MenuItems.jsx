@@ -8,6 +8,8 @@ import {
   Recycling,
   Schedule,
   Hub,
+  Feed,
+  Collections,
 } from "@mui/icons-material";
 
 export const getDrawerItems = (centerId) => {
@@ -31,6 +33,16 @@ export const getDrawerItems = (centerId) => {
       text: "Schedule",
       icon: <Schedule />,
       path: centerId ? `/centers/${centerId}/schedule` : "/centers",
+    },
+    {
+      text: "Gallery",
+      icon: <Collections />,
+      path: centerId ? `/centers/${centerId}/gallery` : "/centers",
+    },
+    {
+      text: "General information",
+      icon: <Feed />,
+      path: centerId ? `/centers/${centerId}/general-information` : "/centers",
     },
     {
       text: "Archived",

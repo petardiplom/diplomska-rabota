@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { ChevronLeft } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { getMinimalDrawerItems } from "./MenuItems";
+import { getMinimalDrawerItems } from "../../routes/MenuItems";
 
 const MobileSidebarContent = ({ handleDrawerToggle }) => {
   const navigate = useNavigate();

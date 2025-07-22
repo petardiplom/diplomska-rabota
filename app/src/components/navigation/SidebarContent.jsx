@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useCenter } from "../../contexts/CenterContext";
-import { getDrawerItems, getMinimalDrawerItems } from "./MenuItems";
+import { getMinimalDrawerItems, getDrawerItems } from "../../routes/MenuItems";
 
 const SidebarContent = ({ sidebarOpen, toggleSidebar, isMinimal }) => {
   const theme = useTheme();
