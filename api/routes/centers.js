@@ -3,6 +3,7 @@ import {
   addUserCenter,
   getCenterById,
   getUserCenters,
+  updateCenter,
 } from "../controllers/centers.js";
 import { authenticateUser } from "../middlewares/authMiddleware.js";
 
@@ -13,5 +14,6 @@ router
   .get(authenticateUser, getUserCenters)
   .post(authenticateUser, addUserCenter);
 router.get("/centers/:centerId", authenticateUser, getCenterById);
+router.patch("/centers/:centerId", authenticateUser, updateCenter);
 
 export default router;

@@ -9,6 +9,8 @@ import CenterLayout from "../layouts/CenterLayout";
 import ServiceClient from "../pages/ServiceClient";
 import ArchivedServices from "../pages/archived/ArchivedServices";
 import Schedule from "../pages/schedule/Schedule";
+import GeneralInformation from "../pages/generalInformation";
+import Gallery from "../pages/gallery";
 
 function AppRoutes() {
   return (
@@ -25,6 +27,8 @@ function AppRoutes() {
           <Route path="services" element={<ServiceClient />} />
           <Route path="services/archived" element={<ArchivedServices />} />
           <Route path="schedule" element={<Schedule />} />
+          <Route path="gallery" element={<Gallery />} />
+          <Route path="general-information" element={<GeneralInformation />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/" />} />

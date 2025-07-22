@@ -38,3 +38,15 @@ export const addUserCenter = async (req, res, next) => {
     next(error);
   }
 };
+
+// PATCH
+
+export const updateCenter = async (req, res, next) => {
+  try {
+    const { centerId } = req.params;
+    const centers = await centerService.updateCenter(centerId, req.body);
+    return res.json(centers);
+  } catch (error) {
+    next(error);
+  }
+};

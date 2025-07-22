@@ -2,6 +2,7 @@ CREATE TABLE centers (
     id SERIAL PRIMARY KEY,
     owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
+    description TEXT,
     email TEXT,
     phone TEXT,
     address TEXT,
