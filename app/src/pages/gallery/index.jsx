@@ -49,7 +49,7 @@ const images = [
 const Gallery = () => {
   const { openModal } = useModal();
 
-  const { data, isLoading, isError, refetch } = useCenterGallery();
+  const { isLoading, isError, refetch } = useCenterGallery();
 
   const handleOpen = (image) => {
     openModal("previewImage", {
@@ -64,8 +64,6 @@ const Gallery = () => {
   if (isError) {
     return <ErrorComponent refetch={refetch} />;
   }
-
-  console.log("DATA", data);
 
   return (
     <Paper elevation={3}>
