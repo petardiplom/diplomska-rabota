@@ -10,6 +10,7 @@ import {
   Hub,
   Feed,
   Collections,
+  Groups,
 } from "@mui/icons-material";
 
 export const getDrawerItems = (centerId) => {
@@ -30,10 +31,16 @@ export const getDrawerItems = (centerId) => {
       path: centerId ? `/centers/${centerId}/services` : "/centers",
     },
     {
+      text: "Staff",
+      icon: <Groups />,
+      path: centerId ? `/centers/${centerId}/staff` : "/centers",
+    },
+    {
       text: "Schedule",
       icon: <Schedule />,
       path: centerId ? `/centers/${centerId}/schedule` : "/centers",
     },
+
     {
       text: "Gallery",
       icon: <Collections />,

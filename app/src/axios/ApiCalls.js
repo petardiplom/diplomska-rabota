@@ -9,3 +9,8 @@ export const getArchivedServices = async () => {
   const response = await api.get("/services/archived");
   return response.data;
 };
+
+export const getStaff = async () => {
+  const response = await api.get("/staff");
+  return response.data;
+};

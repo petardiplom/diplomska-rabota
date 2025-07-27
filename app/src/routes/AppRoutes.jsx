@@ -11,6 +11,7 @@ import ArchivedServices from "../pages/archived/ArchivedServices";
 import Schedule from "../pages/schedule/Schedule";
 import GeneralInformation from "../pages/generalInformation";
 import Gallery from "../pages/gallery";
+import Staff from "../pages/staff";
 
 function AppRoutes() {
   return (
@@ -26,6 +27,7 @@ function AppRoutes() {
           <Route path="calendar" element={<Calendar />} />
           <Route path="services" element={<ServiceClient />} />
           <Route path="services/archived" element={<ArchivedServices />} />
+          <Route path="staff" element={<Staff />} />
           <Route path="schedule" element={<Schedule />} />
           <Route path="gallery" element={<Gallery />} />
           <Route path="general-information" element={<GeneralInformation />} />

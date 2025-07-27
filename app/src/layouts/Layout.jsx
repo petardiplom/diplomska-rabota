@@ -24,7 +24,10 @@ const Layout = ({ children }) => {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
 
-      <CustomAppBar sidebarOpen={sidebarOpen} />
+      <CustomAppBar
+        sidebarOpen={sidebarOpen}
+        handleDrawerToggle={handleDrawerToggle}
+      />
 
       <Box component="nav" sx={{ flexShrink: 0 }}>
         {/* Mobile Drawer */}

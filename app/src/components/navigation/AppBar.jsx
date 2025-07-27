@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   AppBar,
   IconButton,
@@ -14,12 +13,10 @@ import { useCenter } from "../../contexts/CenterContext";
 const drawerWidth = 240;
 const collapsedWidth = 70;
 
-const CustomAppBar = ({ sidebarOpen }) => {
-  const [mobileOpen, setMobileOpen] = useState(false);
+const CustomAppBar = ({ sidebarOpen, handleDrawerToggle }) => {
   const center = useCenter();
   const theme = useTheme();
 
-  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
   return (
     <AppBar
       position="fixed"

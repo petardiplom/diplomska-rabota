@@ -13,6 +13,7 @@ import {
   IconButton,
   Collapse,
   useTheme,
+  Typography,
 } from "@mui/material";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
@@ -22,6 +23,7 @@ import ErrorComponent from "../ErrorComponent";
 
 export default React.forwardRef(function ClientTable(
   {
+    title = "Title",
     columns,
     queryFn,
     queryKeyPrefix = "table",
@@ -143,6 +145,9 @@ export default React.forwardRef(function ClientTable(
 
   return (
     <Paper elevation={3}>
+      <Typography variant="h4" p={2}>
+        {title}
+      </Typography>
       <Box p={2}>
         {customFilters && <Box mb={2}>{customFilters}</Box>}
 
