@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   TextField,
@@ -7,43 +7,40 @@ import {
   Button,
   Stack,
   Divider,
-} from '@mui/material';
-import { updateEmail, updatePassword, updateProfile } from 'firebase/auth';
-import { auth } from '../firebase';
-import { toast } from 'react-toastify';
+} from "@mui/material";
+import { updateEmail, updatePassword, updateProfile } from "firebase/auth";
+import { auth } from "../firebase";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const user = auth.currentUser;
-  const [displayName, setDisplayName] = useState('');
-  const [email, setEmail] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const [displayName, setDisplayName] = useState("");
+  const [email, setEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
   useEffect(() => {
     if (user) {
-      setDisplayName(user.displayName || '');
-      setEmail(user.email || '');
+      setDisplayName(user.displayName || "");
+      setEmail(user.email || "");
     }
   }, [user]);
 
   const handleSave = async () => {
     try {
-      // Update display name
       if (user.displayName !== displayName) {
         await updateProfile(user, { displayName });
-        toast.success('Name updated');
+        toast.success("Name updated");
       }
 
-      // Update email
       if (user.email !== email) {
         await updateEmail(user, email);
-        toast.success('Email updated');
+        toast.success("Email updated");
       }
 
-      // Update password
       if (newPassword) {
         await updatePassword(user, newPassword);
-        toast.success('Password updated');
-        setNewPassword('');
+        toast.success("Password updated");
+        setNewPassword("");
       }
     } catch (error) {
       toast.error(error.message);

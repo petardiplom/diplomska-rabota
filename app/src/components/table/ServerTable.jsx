@@ -37,7 +37,7 @@ export default function ServerTable({
       setSortBy(accessor);
       setSortOrder("asc");
     }
-    setPage(0); // reset to first page
+    setPage(0);
   };
 
   const { data, isLoading, isError } = useQuery({

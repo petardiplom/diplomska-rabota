@@ -11,6 +11,7 @@ import {
   Grid,
   Button,
   Chip,
+  Paper,
 } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -109,168 +110,181 @@ const Schedule = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Box pt={2} pb={2} display="flex" alignItems="center">
-        <Typography variant="h4">Schedule</Typography>
-        {!scheduleChanged && (
-          <Chip
-            style={{ marginLeft: 8, marginTop: 6 }}
-            label="Unsaved changes"
-            color="warning"
-            size="small"
-          />
-        )}
-      </Box>
-      <Box
-        display="grid"
-        gridTemplateColumns="repeat(auto-fill, minmax(320px, 1fr))"
-        gap={2}
-      >
-        {schedule.map((day, i) => (
-          <Card
-            key={i}
-            variant="outlined"
-            sx={{ display: "flex", flexDirection: "column", height: "100%" }}
-          >
-            <CardContent sx={{ flexGrow: 1 }}>
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Typography variant="h6" gutterBottom>
-                  {dayNames[day.day_of_week - 1]}
-                </Typography>
-
-                <FormControlLabel
-                  sx={{
-                    "& .MuiFormControlLabel-label": {
-                      fontWeight: "500",
-                    },
-                  }}
-                  control={
-                    <Switch
-                      checked={!day.is_closed}
-                      onChange={(e) =>
-                        handleDayChange(i, {
-                          ...day,
-                          is_closed: !e.target.checked,
-                          work_start: null,
-                          work_end: null,
-                          breaks: [],
-                        })
-                      }
-                    />
-                  }
-                  label={day.is_closed ? "Closed" : "Open"}
-                />
-              </Box>
-
-              {day.is_closed ? (
+      <Paper elevation={3}>
+        <Box p={2} display="flex" alignItems="center">
+          <Typography variant="h4">Schedule</Typography>
+          {!scheduleChanged && (
+            <Chip
+              style={{ marginLeft: 8, marginTop: 6 }}
+              label="Unsaved changes"
+              color="warning"
+              size="small"
+            />
+          )}
+        </Box>
+        <Box
+          p={2}
+          display="grid"
+          gridTemplateColumns="repeat(auto-fill, minmax(320px, 1fr))"
+          gap={2}
+        >
+          {schedule.map((day, i) => (
+            <Card
+              key={i}
+              variant="outlined"
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
+              }}
+            >
+              <CardContent sx={{ flexGrow: 1 }}>
                 <Box
                   display="flex"
-                  flexDirection="column"
                   alignItems="center"
-                  mt={4}
+                  justifyContent="space-between"
                 >
-                  <EventBusyIcon color="disabled" sx={{ fontSize: 64 }} />
-                  <Typography variant="h6" color="text.secondary" mt={1}>
-                    Closed all day
+                  <Typography variant="h6" gutterBottom>
+                    {dayNames[day.day_of_week - 1]}
                   </Typography>
+
+                  <FormControlLabel
+                    sx={{
+                      "& .MuiFormControlLabel-label": {
+                        fontWeight: "500",
+                      },
+                    }}
+                    control={
+                      <Switch
+                        checked={!day.is_closed}
+                        onChange={(e) =>
+                          handleDayChange(i, {
+                            ...day,
+                            is_closed: !e.target.checked,
+                            work_start: null,
+                            work_end: null,
+                            breaks: [],
+                          })
+                        }
+                      />
+                    }
+                    label={day.is_closed ? "Closed" : "Open"}
+                  />
                 </Box>
-              ) : (
-                <>
-                  <Box display="flex" alignItems="center" gap={2} mb={3} mt={3}>
-                    <MyTimePicker
-                      label="Start"
-                      value={day.work_start}
-                      onChange={(newValue) =>
-                        handleDayChange(i, { ...day, work_start: newValue })
-                      }
-                      error={errors[i]?.work_start}
-                    />
-                    <MyTimePicker
-                      label="End"
-                      value={day.work_end}
-                      onChange={(newValue) =>
-                        handleDayChange(i, { ...day, work_end: newValue })
-                      }
-                      error={errors[i]?.work_end}
-                    />
-                  </Box>
 
-                  <Divider sx={{ my: 1 }} />
-
+                {day.is_closed ? (
                   <Box
                     display="flex"
-                    justifyContent="space-between"
+                    flexDirection="column"
                     alignItems="center"
+                    mt={4}
                   >
-                    <Typography variant="subtitle2">Breaks</Typography>
-                    <IconButton
-                      size="small"
-                      disabled={day.breaks.length >= 2}
-                      onClick={() => addBreak(i)}
-                      color="primary"
-                    >
-                      <AddIcon />
-                    </IconButton>
+                    <EventBusyIcon color="disabled" sx={{ fontSize: 64 }} />
+                    <Typography variant="h6" color="text.secondary" mt={1}>
+                      Closed all day
+                    </Typography>
                   </Box>
-
-                  {day.breaks.map((brk, j) => (
-                    <Grid
-                      container
-                      spacing={1}
-                      alignItems="start"
-                      key={j}
-                      sx={{ mb: 1 }}
+                ) : (
+                  <>
+                    <Box
+                      display="flex"
+                      alignItems="center"
                       gap={2}
+                      mb={3}
+                      mt={3}
                     >
-                      <Grid size={5}>
-                        <MyTimePicker
-                          label="From"
-                          value={brk.break_start}
-                          onChange={(val) =>
-                            handleBreakChange(i, j, "break_start", val)
-                          }
-                          error={errors[i]?.breaks[j]?.break_start}
-                        />
+                      <MyTimePicker
+                        label="Start"
+                        value={day.work_start}
+                        onChange={(newValue) =>
+                          handleDayChange(i, { ...day, work_start: newValue })
+                        }
+                        error={errors[i]?.work_start}
+                      />
+                      <MyTimePicker
+                        label="End"
+                        value={day.work_end}
+                        onChange={(newValue) =>
+                          handleDayChange(i, { ...day, work_end: newValue })
+                        }
+                        error={errors[i]?.work_end}
+                      />
+                    </Box>
+
+                    <Divider sx={{ my: 1 }} />
+
+                    <Box
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <Typography variant="subtitle2">Breaks</Typography>
+                      <IconButton
+                        size="small"
+                        disabled={day.breaks.length >= 2}
+                        onClick={() => addBreak(i)}
+                        color="primary"
+                      >
+                        <AddIcon />
+                      </IconButton>
+                    </Box>
+
+                    {day.breaks.map((brk, j) => (
+                      <Grid
+                        container
+                        spacing={1}
+                        alignItems="start"
+                        key={j}
+                        sx={{ mb: 1 }}
+                        gap={2}
+                      >
+                        <Grid size={5}>
+                          <MyTimePicker
+                            label="From"
+                            value={brk.break_start}
+                            onChange={(val) =>
+                              handleBreakChange(i, j, "break_start", val)
+                            }
+                            error={errors[i]?.breaks[j]?.break_start}
+                          />
+                        </Grid>
+                        <Grid size={5}>
+                          <MyTimePicker
+                            label="To"
+                            value={brk.break_end}
+                            onChange={(val) =>
+                              handleBreakChange(i, j, "break_end", val)
+                            }
+                            error={errors[i]?.breaks[j]?.break_end}
+                          />
+                        </Grid>
+                        <Grid size={1} mt={0.8}>
+                          <IconButton
+                            size="small"
+                            onClick={() => removeBreak(i, j)}
+                          >
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        </Grid>
                       </Grid>
-                      <Grid size={5}>
-                        <MyTimePicker
-                          label="To"
-                          value={brk.break_end}
-                          onChange={(val) =>
-                            handleBreakChange(i, j, "break_end", val)
-                          }
-                          error={errors[i]?.breaks[j]?.break_end}
-                        />
-                      </Grid>
-                      <Grid size={1} mt={0.8}>
-                        <IconButton
-                          size="small"
-                          onClick={() => removeBreak(i, j)}
-                        >
-                          <DeleteIcon fontSize="small" />
-                        </IconButton>
-                      </Grid>
-                    </Grid>
-                  ))}
-                </>
-              )}
-            </CardContent>
-          </Card>
-        ))}
-      </Box>
-      <Box display="flex" justifyContent="flex-end" mt={3} pl={10} pr={10}>
-        <Button
-          variant="contained"
-          color="primary"
-          disabled={scheduleChanged}
-          onClick={handleSave}
-        >
-          Save Schedule
-        </Button>
-      </Box>
+                    ))}
+                  </>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </Box>
+        <Box display="flex" justifyContent="flex-end" p={2}>
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={scheduleChanged}
+            onClick={handleSave}
+          >
+            Save Schedule
+          </Button>
+        </Box>
+      </Paper>
     </LocalizationProvider>
   );
 };

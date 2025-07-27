@@ -31,7 +31,7 @@ const ServiceClient = () => {
   const { openModal } = useModal();
 
   const [search, setSearch] = useState(undefined);
-  const [status, setStatus] = useState("all"); // 'all' | 'active' | 'inactive'
+  const [status, setStatus] = useState("all");
 
   const filterServices = (row, filters) => {
     const search = filters.search?.toLowerCase() || "";
@@ -66,6 +66,7 @@ const ServiceClient = () => {
   return (
     <>
       <ClientTable
+        title="Services"
         ref={tableRef}
         queryKeyPrefix="services"
         filterFn={filterServices}
@@ -128,12 +129,7 @@ const ServiceClient = () => {
         queryFn={getServices}
         filters={{ search, status }}
         customFilters={
-          <Box
-            display="flex"
-            alignItems="center"
-            gap={2} // adds horizontal space between elements (MUI v5+)
-            flexWrap="wrap" // responsive wrapping on smaller screens
-          >
+          <Box display="flex" alignItems="center" gap={2} flexWrap="wrap">
             <TextField
               label="Search"
               value={search}

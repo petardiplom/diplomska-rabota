@@ -69,9 +69,7 @@ const Gallery = () => {
     <Paper elevation={3}>
       <Box p={2}>
         <Box display="flex" justifyContent="space-between">
-          <Typography variant="h5" sx={{ ml: 3 }}>
-            Gallery
-          </Typography>
+          <Typography variant="h4">Gallery</Typography>
           <Button
             onClick={() => {
               openModal("uploadImage");

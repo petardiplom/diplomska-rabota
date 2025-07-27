@@ -9,9 +9,7 @@ const GeneralInformation = () => {
   return (
     <Paper elevation={3}>
       <Box p={2}>
-        <Typography variant="h5" sx={{ ml: 3 }}>
-          General Information
-        </Typography>
+        <Typography variant="h4">General Information</Typography>
         <Grid container>
           <Grid size={{ lg: 6, md: 6, xs: 12 }}>
             <GeneralFields center={center} />

@@ -39,13 +39,13 @@ const Service = () => {
   const { mutate } = useToggleService();
 
   const [search, setSearch] = useState(undefined);
-  const [status, setStatus] = useState("all"); // 'all' | 'active' | 'inactive'
+  const [status, setStatus] = useState("all");
   const debouncedSearch = useDebounce(search, 700);
 
   const filters = useMemo(
     () => ({
       search: debouncedSearch,
-      status: status === "all" ? undefined : status, // send undefined if "all" is selected
+      status: status === "all" ? undefined : status,
     }),
     [debouncedSearch, status]
   );

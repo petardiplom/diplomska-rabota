@@ -30,7 +30,7 @@ const GeneralFields = ({ center }) => {
   }
 
   return (
-    <Box m={3}>
+    <Box mt={3}>
       <TextField
         name="name"
         value={ls.name}

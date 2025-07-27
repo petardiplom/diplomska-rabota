@@ -1,4 +1,3 @@
-// eslint.config.js
 import js from "@eslint/js";
 import globals from "globals";
 import react from "eslint-plugin-react";
@@ -34,8 +33,6 @@ export default [
       ...react.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       ...js.configs.recommended.rules,
-
-      // Custom rules
       "no-unused-vars": ["error", { varsIgnorePattern: "^React$" }],
       "no-console": "warn",
       "unused-imports/no-unused-imports": "warn",
@@ -57,7 +54,7 @@ export default [
     },
     settings: {
       react: {
-        version: "19.1", // manually specify React 19 for now
+        version: "19.1",
       },
     },
   },

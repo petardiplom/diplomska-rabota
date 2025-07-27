@@ -104,7 +104,6 @@ const Auth = () => {
   }
 
   if (user) {
-    // Don't render anything, redirect is already handled in useEffect
     return null;
   }
 
@@ -137,7 +136,7 @@ const Auth = () => {
         type="submit"
         fullWidth
         variant="contained"
-        loading={loading} // ← state boolean
+        loading={loading}
       >
         Login
       </Button>

@@ -1,10 +1,10 @@
 export function buildInsertQuery(table, data, allowedFields) {
-  const fields = allowedFields.filter(field => data[field] != null); // skip null & undefined
-  const values = fields.map(field => data[field]);
-  const placeholders = fields.map((_, i) => `$${i + 1}`).join(', ');
+  const fields = allowedFields.filter((field) => data[field] != null); // skip null & undefined
+  const values = fields.map((field) => data[field]);
+  const placeholders = fields.map((_, i) => `$${i + 1}`).join(", ");
 
   const query = `
-        INSERT INTO ${table} (${fields.join(', ')})
+        INSERT INTO ${table} (${fields.join(", ")})
         VALUES (${placeholders})
         RETURNING *;
     `;
@@ -12,15 +12,24 @@ export function buildInsertQuery(table, data, allowedFields) {
   return { query, values };
 }
 
-export function buildUpdateQuery(table, data, allowedFields, whereClause, whereValues, returning = '*') {
-  const fields = allowedFields.filter(field => data[field] != null);
+export function buildUpdateQuery(
+  table,
+  data,
+  allowedFields,
+  whereClause,
+  whereValues,
+  returning = "*"
+) {
+  const fields = allowedFields.filter((field) => data[field] != null);
   if (fields.length === 0) {
-    throw new Error('No valid fields provided to update');
+    throw new Error("No valid fields provided to update");
   }
 
-  const setClauses = fields.map((field, i) => `${field} = $${i + 1}`).join(', ');
+  const setClauses = fields
+    .map((field, i) => `${field} = $${i + 1}`)
+    .join(", ");
 
-  const setValues = fields.map(field => data[field]);
+  const setValues = fields.map((field) => data[field]);
 
   const values = [...setValues, ...whereValues];
 
@@ -40,35 +49,37 @@ export function buildPaginatedQuery({
   filters = {},
   searchFields = [],
   allowedSortFields = [],
-  defaultSortBy = 'created_at',
+  defaultSortBy = "created_at",
   page = 1,
   limit = 10,
 }) {
   const values = [];
   const whereClauses = [];
 
-  // Add filter conditions (e.g., status)
   for (const [key, value] of Object.entries(where)) {
-    if (value !== undefined && value !== '') {
+    if (value !== undefined && value !== "") {
       values.push(value);
       whereClauses.push(`${key} = $${values.length}`);
     }
   }
 
-  // Add search clause
   if (filters.search && searchFields.length > 0) {
     const searchValue = `%${filters.search}%`;
-    const searchConditions = searchFields.map(field => {
+    const searchConditions = searchFields.map((field) => {
       values.push(searchValue);
       return `${field} ILIKE $${values.length}`;
     });
-    whereClauses.push(`(${searchConditions.join(' OR ')})`);
+    whereClauses.push(`(${searchConditions.join(" OR ")})`);
   }
 
-  const whereClause = whereClauses.length > 0 ? `WHERE ${whereClauses.join(' AND ')}` : '';
+  const whereClause =
+    whereClauses.length > 0 ? `WHERE ${whereClauses.join(" AND ")}` : "";
 
-  const sortBy = allowedSortFields.includes(filters.sortBy) ? filters.sortBy : defaultSortBy;
-  const sortOrder = filters.sortOrder?.toLowerCase() === 'desc' ? 'DESC' : 'ASC';
+  const sortBy = allowedSortFields.includes(filters.sortBy)
+    ? filters.sortBy
+    : defaultSortBy;
+  const sortOrder =
+    filters.sortOrder?.toLowerCase() === "desc" ? "DESC" : "ASC";
 
   const offset = (page - 1) * limit;
 

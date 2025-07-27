@@ -1,29 +1,29 @@
-import db from '../db.js';
+import db from "../db.js";
 
 export const requireCenterAccess = async (req, res, next) => {
-  const centerId = req.header('X-Center-Id');
+  const centerId = req.header("X-Center-Id");
 
   if (!centerId) {
-    return res.status(400).json({ error: 'Missing X-Center-Id header' });
+    return res.status(400).json({ error: "Missing X-Center-Id header" });
   }
 
   // TODO FIX USER ID CHECK BELOW
+  // check if owner or check if staff
 
-  // Optional: validate center exists and user has access
   try {
     const result = await db.query(
       `SELECT * FROM centers WHERE id = $1 AND owner_id = $2`,
-      [centerId, req.user.id] // or req.user.id if you map Firebase users to a local users table
+      [centerId, req.user.id]
     );
 
     if (result.rows.length === 0) {
-      return res.status(403).json({ error: 'Unauthorized access to center' });
+      return res.status(403).json({ error: "Unauthorized access to center" });
     }
 
     req.center = result.rows[0];
     next();
   } catch (err) {
-    console.error('DB error in requireCenterAccess', err);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("DB error in requireCenterAccess", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };

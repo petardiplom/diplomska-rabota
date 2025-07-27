@@ -1,28 +1,28 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
 const darkTheme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
     background: {
-      default: '#121212', // Main background
-      paper: '#1e1e1e',    // Card & surface background
+      default: "#121212",
+      paper: "#1e1e1e",
     },
     primary: {
-      main: '#90caf9',     // Light blue
+      main: "#90caf9",
     },
     secondary: {
-      main: '#EFEEEA',     // Pinkish
+      main: "#EFEEEA",
     },
     text: {
-      primary: '#ffffff',
-      secondary: '#aaaaaa',
+      primary: "#ffffff",
+      secondary: "#aaaaaa",
     },
   },
   components: {
     MuiPaper: {
       styleOverrides: {
         root: {
-          backgroundImage: 'none', // Remove paper gradient
+          backgroundImage: "none",
         },
       },
     },
