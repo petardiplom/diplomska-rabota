@@ -1,3 +1,4 @@
+import { defaultError } from "../error.js";
 import { centerService } from "../services/CenterService.js";
 
 // GET
@@ -25,6 +26,17 @@ export const getCenterById = async (req, res, next) => {
   }
 };
 
+export const getCenterGallery = async (req, res, next) => {
+  try {
+    const { centerId } = req.params;
+    const response = await centerService.getCenterGallery(centerId);
+
+    return res.json(response);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // POST
 
 export const addUserCenter = async (req, res, next) => {
@@ -34,6 +46,22 @@ export const addUserCenter = async (req, res, next) => {
       ...req.body,
     });
     return res.json(centers);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const addProfilePicture = async (req, res, next) => {
+  try {
+    const { centerId } = req.params;
+    if (!centerId) {
+      next(defaultError(400, "Bad request: no centerId"));
+    }
+    const response = await centerService.addCenterProfilePicture({
+      center_id: centerId,
+      ...req.body,
+    });
+    return res.json(response);
   } catch (error) {
     next(error);
   }

@@ -7,6 +7,7 @@ import ThemeProvider from "./contexts/ThemeContext.jsx";
 import { CenterProvider } from "./contexts/CenterContext.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ModalProvider } from "./contexts/ModalContext.jsx";
+import { UploadProvider } from "./contexts/UploadContext.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,7 +26,9 @@ createRoot(document.getElementById("root")).render(
           <AuthProvider>
             <CenterProvider>
               <ModalProvider>
-                <App />
+                <UploadProvider>
+                  <App />
+                </UploadProvider>
               </ModalProvider>
             </CenterProvider>
           </AuthProvider>

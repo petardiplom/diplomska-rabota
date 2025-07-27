@@ -1,5 +1,6 @@
 export const Tables = {
   Centers: "centers",
+  CenterImages: "center_images",
   Users: "users",
   Services: "services",
   Subservices: "subservices",

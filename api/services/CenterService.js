@@ -15,6 +15,12 @@ class CenterService extends BaseService {
     return this.findById(Tables.Centers, centerId);
   }
 
+  async getCenterGallery(centerId) {
+    const sql = `SELECT * FROM ${Tables.CenterImages} WHERE center_id = $1 AND type = 'gallery' ORDER BY created_at DESC`;
+    const result = await this.db.query(sql, [centerId]);
+    return result.rows || null;
+  }
+
   async addUserCenter(data) {
     const allowedFields = [
       "owner_id",
@@ -51,6 +57,18 @@ class CenterService extends BaseService {
     return this.update(Tables.Centers, data, allowedFields, "id = $7", [
       centerId,
     ]);
+  }
+
+  async addCenterProfilePicture(data) {
+    const allowedFields = [
+      "title",
+      "description",
+      "center_id",
+      "image_url",
+      "type",
+    ];
+
+    return this.insert(Tables.Centers, data, allowedFields);
   }
 }
 
