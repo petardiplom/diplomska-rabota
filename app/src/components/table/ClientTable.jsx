@@ -35,12 +35,13 @@ export default React.forwardRef(function ClientTable(
     fetchChildren,
     renderChildren,
     expandIconPosition = "left",
+    actions = null,
   },
   ref
 ) {
   const { centerId } = useCenter();
   const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(rowsPerPageOptions[0]);
+  const [limit, setLimit] = useState(rowsPerPageOptions[1]);
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
   const [expandedRowId, setExpandedRowId] = useState(null);
@@ -145,14 +146,21 @@ export default React.forwardRef(function ClientTable(
 
   return (
     <Paper elevation={3}>
-      <Typography variant="h4" p={2}>
-        {title}
-      </Typography>
-      <Box p={2}>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Typography variant="h4" p={2}>
+          {title}
+        </Typography>
+        {actions && (
+          <Box display="flex" gap={2} px={2}>
+            {actions}
+          </Box>
+        )}
+      </Box>
+      <Box p={2} sx={{ overflowX: "auto" }}>
         {customFilters && <Box mb={2}>{customFilters}</Box>}
 
         <TableContainer>
-          <Table>
+          <Table size="small">
             <TableHead>
               <TableRow>
                 {expandable && expandIconPosition === "left" && <TableCell />}
