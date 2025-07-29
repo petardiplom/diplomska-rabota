@@ -30,7 +30,7 @@ const ServiceClient = () => {
   const { mutate: archiveService } = useArchiveService();
   const { openModal } = useModal();
 
-  const [search, setSearch] = useState(undefined);
+  const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
 
   const filterServices = (row, filters) => {

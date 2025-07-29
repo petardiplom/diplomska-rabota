@@ -38,7 +38,7 @@ const Service = () => {
 
   const { mutate } = useToggleService();
 
-  const [search, setSearch] = useState(undefined);
+  const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
   const debouncedSearch = useDebounce(search, 700);
 

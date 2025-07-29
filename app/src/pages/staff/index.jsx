@@ -8,7 +8,7 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import SelectOption from "../../components/forms/SelectOption";
 
 const Staff = () => {
-  const [search, setSearch] = useState(undefined);
+  const [search, setSearch] = useState("");
   const [role, setRole] = useState("all");
 
   const handleRole = (e) => {
