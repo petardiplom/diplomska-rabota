@@ -21,12 +21,13 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import enUS from "date-fns/locale/en-US";
+import enGB from "date-fns/locale/en-GB";
 
 import { useTheme } from "@mui/material/styles";
+import Filters from "./Filters";
 
 const locales = {
-  "en-US": enUS,
+  "en-GB": enGB,
 };
 
 const localizer = dateFnsLocalizer({
@@ -147,128 +148,135 @@ const ReservationCalendar = () => {
 
   return (
     <Paper elevation={3} sx={{ p: 2, height: "80vh" }}>
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h4" mb={3}>
         Reservation Calendar
       </Typography>
 
-      <Box
-        sx={{
-          height: "calc(100% - 60px)",
-          bgcolor: isDarkMode ? "#1e1e1e" : "background.paper",
-          color: isDarkMode ? "#e0e0e0" : "text.primary",
-          fontSize: "14px",
-          fontWeight: 500,
+      <Box sx={{ display: "flex", height: "100%" }}>
+        <Box width="200px" pr={2}>
+          <Filters />
+        </Box>
 
-          "& .rbc-toolbar": {
-            backgroundColor: isDarkMode ? "#1f1f1f" : "#f5f5f5",
-            color: isDarkMode ? "#ffffff" : "#000000",
-            borderBottom: `1px solid ${isDarkMode ? "#444" : "#ddd"}`,
-            button: {
-              backgroundColor: isDarkMode ? "#2c2c2c" : "#fff",
-              color: isDarkMode ? "#ddd" : "#333",
-              border: "none",
-              fontWeight: "600",
-              margin: "0 4px",
-              padding: "6px 12px",
-              borderRadius: "4px",
-              "&:hover": {
-                backgroundColor: isDarkMode ? "#3d3d3d" : "#e0e0e0",
-                cursor: "pointer",
-              },
-              "&.rbc-active": {
-                backgroundColor: "#1976d2",
-                color: "#fff",
+        <Box
+          sx={{
+            width: "calc(100% - 200px)",
+            height: "calc(100% - 60px)",
+            bgcolor: isDarkMode ? "#1e1e1e" : "background.paper",
+            color: isDarkMode ? "#e0e0e0" : "text.primary",
+            fontSize: "14px",
+            fontWeight: 500,
+
+            "& .rbc-toolbar": {
+              backgroundColor: isDarkMode ? "#1f1f1f" : "#f5f5f5",
+              color: isDarkMode ? "#ffffff" : "#000000",
+              borderBottom: `1px solid ${isDarkMode ? "#444" : "#ddd"}`,
+              button: {
+                backgroundColor: isDarkMode ? "#2c2c2c" : "#fff",
+                color: isDarkMode ? "#ddd" : "#333",
+                border: "none",
+                fontWeight: "600",
+                margin: "0 4px",
+                padding: "6px 12px",
+                borderRadius: "4px",
+                "&:hover": {
+                  backgroundColor: isDarkMode ? "#3d3d3d" : "#e0e0e0",
+                  cursor: "pointer",
+                },
+                "&.rbc-active": {
+                  backgroundColor: "#1976d2",
+                  color: "#fff",
+                },
               },
             },
-          },
 
-          "& .rbc-month-view, .rbc-time-view": {
-            backgroundColor: isDarkMode ? "#1a1a1a" : "#fff",
-          },
+            "& .rbc-month-view, .rbc-time-view": {
+              backgroundColor: isDarkMode ? "#1a1a1a" : "#fff",
+            },
 
-          "& .rbc-time-slot, & .rbc-day-bg, & .rbc-time-content > * + *": {
-            borderColor: isDarkMode ? "#444" : "#ddd",
-          },
+            "& .rbc-time-slot, & .rbc-day-bg, & .rbc-time-content > * + *": {
+              borderColor: isDarkMode ? "#444" : "#ddd",
+            },
 
-          "& .rbc-today": {
-            backgroundColor: isDarkMode ? "#263238" : "#eaf6ff",
-          },
+            "& .rbc-today": {
+              backgroundColor: isDarkMode ? "#263238" : "#eaf6ff",
+            },
 
-          "& .rbc-event": {
-            borderRadius: "6px",
-            boxShadow: isDarkMode
-              ? "0 0 8px 1px rgba(25, 118, 210, 0.6)"
-              : "0 2px 5px rgba(0,0,0,0.15)",
-          },
-          "& .rbc-event-label": {
-            fontWeight: "700",
-          },
-          "& .rbc-event-content": {
-            whiteSpace: "normal",
-          },
+            "& .rbc-event": {
+              borderRadius: "6px",
+              boxShadow: isDarkMode
+                ? "0 0 8px 1px rgba(25, 118, 210, 0.6)"
+                : "0 2px 5px rgba(0,0,0,0.15)",
+            },
+            "& .rbc-event-label": {
+              fontWeight: "700",
+            },
+            "& .rbc-event-content": {
+              whiteSpace: "normal",
+            },
 
-          "& .rbc-off-range-bg": {
-            backgroundColor: isDarkMode ? "#121212" : "#f0f0f0",
-          },
+            "& .rbc-off-range-bg": {
+              backgroundColor: isDarkMode ? "#121212" : "#f0f0f0",
+            },
 
-          "& .rbc-off-range": {
-            color: isDarkMode ? "#999" : "#bbb",
-          },
+            "& .rbc-off-range": {
+              color: isDarkMode ? "#999" : "#bbb",
+            },
 
-          "& .rbc-off-range-bg .rbc-event": {
-            backgroundColor: isDarkMode ? "#444" : "#ccc",
-            color: "#fff",
-          },
-
-          "& .rbc-month-view .rbc-day-bg:not(.rbc-off-range-bg)": {
-            backgroundColor: isDarkMode ? "#1e1e1e" : "#fff",
-          },
-          "& .rbc-month-view .rbc-today, & .rbc-week-view .rbc-today": {
-            backgroundColor: isDarkMode
-              ? "#2a3b4d !important"
-              : "#d0ebff !important",
-          },
-
-          "& .rbc-day-view .rbc-today": {
-            backgroundColor: "inherit",
-          },
-
-          "& .rbc-timeslot-group": {
-            borderBottom: isDarkMode ? "1px solid #2a2a2a" : "1px solid #eee",
-          },
-
-          "& .rbc-header": {
-            borderRight: isDarkMode ? "1px solid #2a2a2a" : "1px solid #ccc",
-          },
-        }}
-      >
-        <Calendar
-          localizer={localizer}
-          events={events}
-          startAccessor="start"
-          endAccessor="end"
-          date={currentDate}
-          view={currentView}
-          onNavigate={handleNavigate}
-          onView={handleViewChange}
-          defaultView="month"
-          views={["month", "week", "day", "agenda"]}
-          selectable
-          onSelectEvent={handleSelectEvent}
-          onSelectSlot={handleSelectSlot}
-          eventPropGetter={(event) => ({
-            style: {
-              backgroundColor:
-                event.resource.type === "meeting"
-                  ? "#1976d2"
-                  : event.resource.type === "meal"
-                  ? "#2e7d32"
-                  : "#c62828",
+            "& .rbc-off-range-bg .rbc-event": {
+              backgroundColor: isDarkMode ? "#444" : "#ccc",
               color: "#fff",
-              border: 0,
             },
-          })}
-        />
+
+            "& .rbc-month-view .rbc-day-bg:not(.rbc-off-range-bg)": {
+              backgroundColor: isDarkMode ? "#1e1e1e" : "#fff",
+            },
+            "& .rbc-month-view .rbc-today, & .rbc-week-view .rbc-today": {
+              backgroundColor: isDarkMode
+                ? "#2a3b4d !important"
+                : "#d0ebff !important",
+            },
+
+            "& .rbc-day-view .rbc-today": {
+              backgroundColor: "inherit",
+            },
+
+            "& .rbc-timeslot-group": {
+              borderBottom: isDarkMode ? "1px solid #2a2a2a" : "1px solid #eee",
+            },
+
+            "& .rbc-header": {
+              borderRight: isDarkMode ? "1px solid #2a2a2a" : "1px solid #ccc",
+            },
+          }}
+        >
+          <Calendar
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            date={currentDate}
+            view={currentView}
+            onNavigate={handleNavigate}
+            onView={handleViewChange}
+            defaultView="month"
+            views={["month", "week", "day", "agenda"]}
+            selectable
+            onSelectEvent={handleSelectEvent}
+            onSelectSlot={handleSelectSlot}
+            eventPropGetter={(event) => ({
+              style: {
+                backgroundColor:
+                  event.resource.type === "meeting"
+                    ? "#1976d2"
+                    : event.resource.type === "meal"
+                    ? "#2e7d32"
+                    : "#c62828",
+                color: "#fff",
+                border: 0,
+              },
+            })}
+          />
+        </Box>
       </Box>
 
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>

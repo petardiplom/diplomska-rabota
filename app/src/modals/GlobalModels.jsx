@@ -1,5 +1,6 @@
 import { useModal } from "../contexts/ModalContext";
 import AddCenterModal from "./AddCenterModal";
+import AddReservationModal from "./AddReservationModal";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import EditServiceModal from "./EditServiceModal";
 import EditSubserviceModal from "./EditSubserviceModal";
@@ -13,6 +14,7 @@ const MODAL_COMPONENTS = {
   confirmDelete: ConfirmDeleteModal,
   previewImage: ImageModal,
   uploadImage: UploadImageModal,
+  createReservation: AddReservationModal,
 };
 
 const GlobalModals = () => {

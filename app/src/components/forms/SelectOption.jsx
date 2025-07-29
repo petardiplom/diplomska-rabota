@@ -17,7 +17,6 @@ const SelectOption = ({
       variant="outlined"
       size={size}
       sx={{
-        minWidth: "209px",
         "& .MuiSelect-select": {
           paddingTop: size === "small" ? "8.5px" : "16.5px",
           paddingBottom: size === "small" ? "8.5px" : "16.5px",

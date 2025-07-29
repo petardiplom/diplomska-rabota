@@ -81,29 +81,32 @@ const Staff = () => {
             size="small"
           />
 
-          <SelectOption
-            label="Role"
-            value={role}
-            onChange={handleRole}
-            options={[
-              {
-                value: "all",
-                label: "All",
-              },
-              {
-                value: "owner",
-                label: "Owner",
-              },
-              {
-                value: "manager",
-                label: "Manager",
-              },
-              {
-                value: "staff",
-                label: "Staff",
-              },
-            ]}
-          />
+          <Box sx={{ minWidth: "209px" }}>
+            <SelectOption
+              label="Role"
+              value={role}
+              onChange={handleRole}
+              fullWidth
+              options={[
+                {
+                  value: "all",
+                  label: "All",
+                },
+                {
+                  value: "owner",
+                  label: "Owner",
+                },
+                {
+                  value: "manager",
+                  label: "Manager",
+                },
+                {
+                  value: "staff",
+                  label: "Staff",
+                },
+              ]}
+            />
+          </Box>
         </Box>
       }
     />

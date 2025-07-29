@@ -3,7 +3,6 @@ import Auth from "../pages/Auth";
 import Dashboard from "../pages/Dashboard";
 import Profile from "../pages/Profile";
 import ProtectedLayout from "../layouts/ProtectedLayout";
-import Calendar from "../pages/Calendar";
 import Centers from "../pages/Centers";
 import CenterLayout from "../layouts/CenterLayout";
 import ServiceClient from "../pages/ServiceClient";
@@ -12,6 +11,7 @@ import Schedule from "../pages/schedule/Schedule";
 import GeneralInformation from "../pages/generalInformation";
 import Gallery from "../pages/gallery";
 import Staff from "../pages/staff";
+import ReservationCalendar from "../pages/calendar";
 
 function AppRoutes() {
   return (
@@ -24,7 +24,7 @@ function AppRoutes() {
 
         <Route path="/centers/:centerId" element={<CenterLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="calendar" element={<Calendar />} />
+          <Route path="calendar" element={<ReservationCalendar />} />
           <Route path="services" element={<ServiceClient />} />
           <Route path="services/archived" element={<ArchivedServices />} />
           <Route path="staff" element={<Staff />} />
