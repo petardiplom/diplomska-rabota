@@ -12,6 +12,8 @@ import GeneralInformation from "../pages/generalInformation";
 import Gallery from "../pages/gallery";
 import Staff from "../pages/staff";
 import ReservationCalendar from "../pages/calendar";
+import Customers from "../pages/customers";
+import ArchivedCustomers from "../pages/archived/ArchivedCustomers";
 
 function AppRoutes() {
   return (
@@ -25,6 +27,8 @@ function AppRoutes() {
         <Route path="/centers/:centerId" element={<CenterLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="calendar" element={<ReservationCalendar />} />
+          <Route path="customers" element={<Customers />} />
+          <Route path="customers/archived" element={<ArchivedCustomers />} />
           <Route path="services" element={<ServiceClient />} />
           <Route path="services/archived" element={<ArchivedServices />} />
           <Route path="staff" element={<Staff />} />

@@ -1,35 +1,46 @@
 import { Button } from "@mui/material";
 import SelectOption from "../../components/forms/SelectOption";
 import { useModal } from "../../contexts/ModalContext";
+import { useCustomers } from "../../hooks/apiHooks/useCustomers";
 
 const Filters = () => {
   const { openModal } = useModal();
+
+  const { data: customers } = useCustomers();
+
   return (
     <>
       <SelectOption
         label="Customer"
-        value={null}
-        options={[]}
+        value={""}
+        options={
+          customers
+            ? customers.map((customer) => ({
+                id: customer.id,
+                label: `${customer.email} - (${customer.firstname} ${customer.lastname})`,
+              }))
+            : []
+        }
         fullWidth
         sx={{ marginBottom: 2 }}
       />
       <SelectOption
         label="Staff"
-        value={null}
+        value={""}
         options={[]}
         fullWidth
         sx={{ marginBottom: 2 }}
       />
       <SelectOption
         label="Service"
-        value={null}
+        value={""}
         options={[]}
         fullWidth
         sx={{ marginBottom: 2 }}
       />
       <SelectOption
         label="Subservice"
-        value={null}
+        value={""}
         options={[]}
         fullWidth
         sx={{ marginBottom: 2 }}

@@ -5,6 +5,7 @@ import centerRoutes from "./routes/centers.js";
 import servicesRoutes from "./routes/services.js";
 import scheduleRoutes from "./routes/schedules.js";
 import staffRoutes from "./routes/staff.js";
+import customerRoutes from "./routes/customers.js";
 import errorMiddleware from "./middlewares/errorMiddleware.js";
 
 const PORT = 8000;
@@ -17,6 +18,7 @@ app.use("/api", centerRoutes);
 app.use("/api", servicesRoutes);
 app.use("/api", scheduleRoutes);
 app.use("/api", staffRoutes);
+app.use("/api", customerRoutes);
 
 // 404 handler
 app.use((req, _, next) => {

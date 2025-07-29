@@ -1,3 +1,8 @@
+export const isEmailValid = (email) => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+};
+
 export const formatFileSize = (bytes, decimals = 2) => {
   if (bytes === 0) return "0 Bytes";
 

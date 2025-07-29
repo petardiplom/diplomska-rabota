@@ -14,3 +14,13 @@ export const getStaff = async () => {
   const response = await api.get("/staff");
   return response.data;
 };
+
+export const getCustomers = async () => {
+  const response = await api.get("/customers");
+  return response.data;
+};
+
+export const getArchivedCustomers = async () => {
+  const response = await api.get("/customers/archived");
+  return response.data;
+};

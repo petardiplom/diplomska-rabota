@@ -1,14 +1,30 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from '@mui/material';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Typography,
+} from "@mui/material";
 
-export default function ConfirmDeleteModal({ open, onClose, onConfirm, message = 'Are you sure you want to archive?' }) {
+export default function ConfirmDeleteModal({
+  open,
+  onClose,
+  onConfirm,
+  title = "Confirm archive",
+  buttonTitle = "Archive",
+  message = "Are you sure you want to archive?",
+}) {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
-      <DialogTitle>Confirm archive</DialogTitle>
+      <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <Typography>{message}</Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="inherit">Cancel</Button>
+        <Button onClick={onClose} color="inherit">
+          Cancel
+        </Button>
         <Button
           onClick={() => {
             onConfirm();
@@ -18,7 +34,7 @@ export default function ConfirmDeleteModal({ open, onClose, onConfirm, message =
           variant="contained"
           autoFocus
         >
-          Archive
+          {buttonTitle}
         </Button>
       </DialogActions>
     </Dialog>

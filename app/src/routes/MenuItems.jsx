@@ -11,6 +11,7 @@ import {
   Feed,
   Collections,
   Groups,
+  Group,
 } from "@mui/icons-material";
 
 export const getDrawerItems = (centerId) => {
@@ -24,6 +25,11 @@ export const getDrawerItems = (centerId) => {
       text: "Calendar",
       icon: <CalendarMonth />,
       path: centerId ? `/centers/${centerId}/calendar` : "/centers",
+    },
+    {
+      text: "Customers",
+      icon: <Group />,
+      path: centerId ? `/centers/${centerId}/customers` : "/centers",
     },
     {
       text: "Services",
@@ -55,6 +61,13 @@ export const getDrawerItems = (centerId) => {
       text: "Archived",
       icon: <RestoreFromTrash />,
       children: [
+        {
+          text: "Customers",
+          path: centerId
+            ? `/centers/${centerId}/customers/archived`
+            : "/centers",
+          icon: <Recycling />,
+        },
         {
           text: "Services",
           path: centerId

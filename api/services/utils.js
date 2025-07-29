@@ -1,5 +1,7 @@
 export function buildInsertQuery(table, data, allowedFields) {
-  const fields = allowedFields.filter((field) => data[field] != null); // skip null & undefined
+  const fields = allowedFields.filter(
+    (field) => data[field] != null && data[field] != ""
+  ); // skip null & undefined
   const values = fields.map((field) => data[field]);
   const placeholders = fields.map((_, i) => `$${i + 1}`).join(", ");
 
