@@ -14,10 +14,12 @@ import { useRestoreService } from "../../hooks/apiHooks/useServices";
 import ClientTable from "../../components/table/ClientTable";
 import { printPrice, printDate } from "../../utils/printUtils";
 import { getArchivedServices } from "../../axios/ApiCalls";
+import { useModal } from "../../contexts/ModalContext";
 
 const ArchivedServices = () => {
   const { mutate: restoreService } = useRestoreService();
-  const [search, setSearch] = useState(undefined);
+  const { openModal } = useModal();
+  const [search, setSearch] = useState("");
 
   const filterServices = (row, filters) => {
     const search = filters.search?.toLowerCase() || "";
@@ -27,6 +29,17 @@ const ArchivedServices = () => {
       row.description?.toLowerCase().includes(search);
 
     return matchesSearch;
+  };
+
+  const handleRestoreService = (serviceId) => {
+    openModal("confirmDelete", {
+      message: "Are you sure you want to restore this service?",
+      title: "Restore service",
+      buttonTitle: "Restore",
+      onConfirm: () => {
+        restoreService({ serviceId });
+      },
+    });
   };
 
   return (
@@ -62,7 +75,7 @@ const ArchivedServices = () => {
               <Button
                 size="small"
                 variant="outlined"
-                onClick={() => restoreService({ serviceId: row.id })}
+                onClick={() => handleRestoreService(row.id)}
               >
                 Restore
               </Button>
