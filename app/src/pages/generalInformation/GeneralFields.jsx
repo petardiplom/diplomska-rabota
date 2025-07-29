@@ -18,7 +18,14 @@ const GeneralFields = ({ center }) => {
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setLs((prev) => ({ ...prev, [name]: value }));
+    if (name === "phone") {
+      const allowedChars = /^[0-9+\-() ]*$/;
+      if (allowedChars.test(e.target.value)) {
+        setLs((prev) => ({ ...prev, [name]: value }));
+      }
+    } else {
+      setLs((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = () => {
