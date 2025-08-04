@@ -38,6 +38,17 @@ export const getServiceSubservices = async (req, res, next) => {
   }
 };
 
+export const getCenterSubservices = async (req, res, next) => {
+  try {
+    const center = req.center;
+    const response = await servicesService.getCenterSubservices(center.id);
+
+    return res.json(response);
+  } catch (error) {
+    next(error);
+  }
+};
+
 //PATCH
 export const toggleServiceStatus = async (req, res, next) => {
   try {

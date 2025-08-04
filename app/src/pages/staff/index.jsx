@@ -15,7 +15,7 @@ const Staff = () => {
     setRole(e.target.value);
   };
 
-  const filterServices = (row, filters) => {
+  const filterStaff = (row, filters) => {
     const search = filters.search?.toLowerCase() || "";
     const matchesSearch =
       !search ||
@@ -35,7 +35,7 @@ const Staff = () => {
     <ClientTable
       title="Staff"
       queryKeyPrefix="staff"
-      filterFn={filterServices}
+      filterFn={filterStaff}
       columns={[
         { label: "ID", accessor: "id", sortable: true },
         { label: "Name", accessor: "username", sortable: true },

@@ -2,7 +2,7 @@ import { TextField, MenuItem } from "@mui/material";
 
 const SelectOption = ({
   label,
-  value,
+  value = "",
   onChange,
   options = [],
   size = "small",

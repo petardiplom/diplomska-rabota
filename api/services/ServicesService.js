@@ -54,6 +54,14 @@ class ServicesService extends BaseService {
     return response.rows;
   }
 
+  async getCenterSubservices(centerId) {
+    const sql = `SELECT ss.* FROM ${Tables.Subservices} ss 
+      INNER JOIN ${Tables.Services} s ON ss.service_id = s.id
+    WHERE s.center_id = $1 ORDER BY ss.id ASC`;
+    const response = await this.db.query(sql, [centerId]);
+    return response.rows;
+  }
+
   async getServiceSubservices(serviceId) {
     return this.findAllByField(Tables.Subservices, "service_id", serviceId);
   }

@@ -5,6 +5,7 @@ import {
   editService,
   editSubservice,
   getArchivedServicesByCenter,
+  getCenterSubservices,
   getServicesByCenter,
   getServiceSubservices,
   restoreService,
@@ -22,6 +23,12 @@ router.get(
   authenticateUser,
   requireCenterAccess,
   getArchivedServicesByCenter
+);
+router.get(
+  "/subservices",
+  authenticateUser,
+  requireCenterAccess,
+  getCenterSubservices
 );
 
 router
