@@ -11,10 +11,23 @@ export const getCenterSchedule = async (req, res, next) => {
   }
 };
 
-// PATCH
-export const updateCenterSchedule = async (req, res, next) => {
+export const getStaffSchedule = async (req, res, next) => {
   try {
-    const schedule = await scheduleService.updateCenterSchedule(req.body);
+    const { staffId } = req.params;
+    const center = req.center;
+
+    console.log("STAFFID", staffId);
+    const schedule = await scheduleService.getStaffSchedule(center.id, staffId);
+    return res.json(schedule);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// PATCH
+export const updateSchedule = async (req, res, next) => {
+  try {
+    const schedule = await scheduleService.updateSchedule(req.body);
     return res.json(schedule);
   } catch (error) {
     next(error);

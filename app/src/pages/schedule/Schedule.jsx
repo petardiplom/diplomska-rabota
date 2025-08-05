@@ -18,12 +18,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
-import {
-  useCenterSchedule,
-  useUpdateCenterSchedule,
-} from "../../hooks/apiHooks/useCenterSchedule";
-import LoadingComponent from "../../components/LoadingComponent";
-import ErrorComponent from "../../components/ErrorComponent";
 import isEqual from "fast-deep-equal";
 import cloneDeep from "lodash.clonedeep";
 import MyTimePicker from "../../components/forms/MyTimePicker";
@@ -44,13 +38,10 @@ const dayNames = [
   "Sunday",
 ];
 
-const Schedule = () => {
+const Schedule = ({ data, updateSchedule }) => {
   const [schedule, setSchedule] = useState([]);
   const [original, setOriginal] = useState([]);
   const [errors, setErrors] = useState([]);
-
-  const { data, isLoading, isError, refetch } = useCenterSchedule();
-  const { mutate, isLoading: updateLoading } = useUpdateCenterSchedule();
 
   useEffect(() => {
     if (data) {
@@ -95,16 +86,8 @@ const Schedule = () => {
       return;
     }
 
-    mutate({ data: converted });
+    updateSchedule({ data: converted });
   };
-
-  if (isLoading || updateLoading) {
-    return <LoadingComponent />;
-  }
-
-  if (isError) {
-    return <ErrorComponent refetch={refetch} />;
-  }
 
   const scheduleChanged = isEqual(schedule, original);
 

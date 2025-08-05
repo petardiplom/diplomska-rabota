@@ -18,3 +18,15 @@ INSERT INTO work_breaks (schedule_id, break_start, break_end)
 VALUES 
   (5, '12:30', '13:00'),
   (5, '15:30', '15:45');
+
+
+
+
+-- STAFF
+
+INSERT INTO work_breaks (schedule_id, break_start, break_end)
+VALUES 
+  (8, '12:00', '12:30'),
+  (9, '12:00', '12:30'),
+  (11, '12:00', '12:30'),
+  (12, '12:00', '12:30');

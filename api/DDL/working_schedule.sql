@@ -24,3 +24,16 @@ VALUES
   (1, NULL, 5, FALSE, '09:00', '18:00'),
   (1, NULL, 6, FALSE, '10:00', '14:00'),
   (1, NULL, 7, TRUE, NULL, NULL);
+
+
+-- STAFF
+
+INSERT INTO working_schedules (center_id, center_staff_id, day_of_week, is_closed, work_start, work_end)
+VALUES 
+  (1, 2, 1, FALSE, '10:00', '17:00'),
+  (1, 2, 2, FALSE, '10:00', '16:00'),
+  (1, 2, 3, TRUE, NULL, NULL),
+  (1, 2, 4, FALSE, '10:30', '17:30'),
+  (1, 2, 5, FALSE, '10:00', '18:00'),
+  (1, 2, 6, FALSE, '10:00', '14:00'),
+  (1, 2, 7, TRUE, NULL, NULL);

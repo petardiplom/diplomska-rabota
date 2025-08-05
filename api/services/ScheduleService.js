@@ -35,7 +35,35 @@ class ScheduleService extends BaseService {
     return response.rows;
   }
 
-  async updateCenterSchedule(schedule) {
+  async getStaffSchedule(center_id, staff_id) {
+    const sql = `
+        SELECT 
+            sched.id AS id,
+            sched.day_of_week,
+            sched.is_closed,
+            sched.work_start,
+            sched.work_end,
+            COALESCE(
+                json_agg(
+                json_build_object(
+                    'break_start', sb.break_start,
+                    'break_end', sb.break_end
+                )
+                ) FILTER (WHERE sb.id IS NOT NULL),
+                '[]'::json
+            ) AS breaks
+        FROM ${Tables.Schedules} sched
+        LEFT JOIN ${Tables.ScheduleBreaks} sb ON sb.schedule_id = sched.id
+        WHERE sched.center_id = $1 AND sched.center_staff_id = $2
+        GROUP BY sched.id, sched.day_of_week, sched.is_closed, sched.work_start, sched.work_end
+        ORDER BY sched.day_of_week;
+    `;
+    const response = await this.db.query(sql, [center_id, staff_id]);
+
+    return response.rows;
+  }
+
+  async updateSchedule(schedule) {
     await this.withTransaction(async (client) => {
       const updateSql = `UPDATE ${Tables.Schedules} SET work_start = $1, work_end = $2, is_closed = $3 WHERE id = $4`;
       const deleteBreakSql = `DELETE FROM ${Tables.ScheduleBreaks} WHERE schedule_id = $1`;

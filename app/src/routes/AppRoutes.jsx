@@ -6,7 +6,6 @@ import ProtectedLayout from "../layouts/ProtectedLayout";
 import Centers from "../pages/Centers";
 import CenterLayout from "../layouts/CenterLayout";
 import ArchivedServices from "../pages/archived/ArchivedServices";
-import Schedule from "../pages/schedule/Schedule";
 import GeneralInformation from "../pages/generalInformation";
 import Gallery from "../pages/gallery";
 import Staff from "../pages/staff";
@@ -14,6 +13,8 @@ import ReservationCalendar from "../pages/calendar";
 import Customers from "../pages/customers";
 import ArchivedCustomers from "../pages/archived/ArchivedCustomers";
 import Services from "../pages/services";
+import CenterSchedule from "../pages/schedule/CenterSchedule";
+import StaffSchedule from "../pages/schedule/StaffSchedule";
 
 function AppRoutes() {
   return (
@@ -32,7 +33,8 @@ function AppRoutes() {
           <Route path="services" element={<Services />} />
           <Route path="services/archived" element={<ArchivedServices />} />
           <Route path="staff" element={<Staff />} />
-          <Route path="schedule" element={<Schedule />} />
+          <Route path="staff/:staffId/schedule" element={<StaffSchedule />} />
+          <Route path="schedule" element={<CenterSchedule />} />
           <Route path="gallery" element={<Gallery />} />
           <Route path="general-information" element={<GeneralInformation />} />
         </Route>

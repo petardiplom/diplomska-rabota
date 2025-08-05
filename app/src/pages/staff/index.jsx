@@ -6,10 +6,17 @@ import { getStaff } from "../../axios/ApiCalls";
 import EditIcon from "@mui/icons-material/Edit";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import SelectOption from "../../components/forms/SelectOption";
+import ScheduleIcon from "@mui/icons-material/Schedule";
+import { useNavigate } from "react-router-dom";
+import { useCenter } from "../../contexts/CenterContext";
 
 const Staff = () => {
   const [search, setSearch] = useState("");
   const [role, setRole] = useState("all");
+
+  const { centerId } = useCenter();
+
+  const navigate = useNavigate();
 
   const handleRole = (e) => {
     setRole(e.target.value);
@@ -50,10 +57,16 @@ const Staff = () => {
         {
           label: "Actions",
           accessor: "actions",
-          render: () => (
+          render: (_, row) => (
             <DropDownButton
               buttonLabel="Actions"
               options={[
+                {
+                  label: "Schedule",
+                  icon: <ScheduleIcon />,
+                  onClick: () =>
+                    navigate(`/centers/${centerId}/staff/${row.id}/schedule`),
+                },
                 {
                   label: "Edit",
                   icon: <EditIcon />,

@@ -2,7 +2,8 @@ import express from "express";
 import { authenticateUser } from "../middlewares/authMiddleware.js";
 import {
   getCenterSchedule,
-  updateCenterSchedule,
+  getStaffSchedule,
+  updateSchedule,
 } from "../controllers/schedules.js";
 import { requireCenterAccess } from "../middlewares/centerMiddleware.js";
 
@@ -15,11 +16,18 @@ router.get(
   getCenterSchedule
 );
 
+router.get(
+  "/schedules/staff/:staffId",
+  authenticateUser,
+  requireCenterAccess,
+  getStaffSchedule
+);
+
 router.patch(
   "/schedules",
   authenticateUser,
   requireCenterAccess,
-  updateCenterSchedule
+  updateSchedule
 );
 
 export default router;
