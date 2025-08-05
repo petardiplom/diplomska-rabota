@@ -40,8 +40,6 @@ class CustomerService extends BaseService {
   async updateCustomer(customerId, data) {
     const allowedFields = ["email", "firstname", "lastname", "phone"];
 
-    console.log("DATA", data);
-
     return this.update(Tables.Customers, data, allowedFields, "id = $5", [
       customerId,
     ]);

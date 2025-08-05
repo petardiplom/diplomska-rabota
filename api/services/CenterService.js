@@ -51,9 +51,6 @@ class CenterService extends BaseService {
       "country",
     ];
 
-    console.log("CENTER ID", centerId);
-    console.log("CENTER DATA", data);
-
     return this.update(Tables.Centers, data, allowedFields, "id = $7", [
       centerId,
     ]);

@@ -56,9 +56,6 @@ export const addService = async (req, res, next) => {
     const center = req.center;
     const { name, description, color } = req.body;
 
-    console.log("CENTER", center);
-    console.log("name, description, color", name, description, color);
-
     const service = await servicesService.addService({
       center_id: center.id,
       name,

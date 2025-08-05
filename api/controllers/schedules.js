@@ -16,7 +16,6 @@ export const getStaffSchedule = async (req, res, next) => {
     const { staffId } = req.params;
     const center = req.center;
 
-    console.log("STAFFID", staffId);
     const schedule = await scheduleService.getStaffSchedule(center.id, staffId);
     return res.json(schedule);
   } catch (error) {

@@ -34,7 +34,6 @@ export const useUpdateCenterSchedule = () => {
 export const useStaffSchedule = (staffId) => {
   const { centerId } = useCenter();
 
-  console.log("STAFF ID!!", staffId);
   return useQuery({
     queryKey: [STAFF_SCHEDULE_QUERY_KEY, centerId, staffId],
     queryFn: async () => {
