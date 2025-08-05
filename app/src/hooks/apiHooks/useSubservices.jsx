@@ -17,10 +17,22 @@ export const useSubservices = () => {
   });
 };
 
+export const useAddSubservice = () => {
+  return useMutation({
+    mutationFn: (data) => api.post(`/subservices`, data),
+    onSuccess: () => {
+      toast.success("Subservice added!");
+    },
+  });
+};
+
 export const useUpdateSubservice = () => {
   return useMutation({
     mutationFn: ({ subserviceId, data }) =>
-      api.patch(`/subservices/${subserviceId}`, data),
+      api.patch(`/subservices/${subserviceId}`, {
+        ...data,
+        duration: +data.duration,
+      }),
     onSuccess: () => {
       toast.success("Subservice updated!");
     },

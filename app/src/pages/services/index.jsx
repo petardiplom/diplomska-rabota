@@ -9,22 +9,25 @@ import {
   TableHead,
   TableRow,
   TableCell,
+  Button,
 } from "@mui/material";
-import api from "../axios/axios";
+import api from "../../axios/axios";
 import { useRef, useState } from "react";
 import {
   useArchiveService,
   useToggleService,
-} from "../hooks/apiHooks/useServices";
-import ClientTable from "../components/table/ClientTable";
-import { printPrice, printDate } from "../utils/printUtils";
-import { getServices } from "../axios/ApiCalls";
-import DropDownButton from "../components/buttons/DropDownButton";
+} from "../../hooks/apiHooks/useServices";
+import ClientTable from "../../components/table/ClientTable";
+import { printPrice, printDate } from "../../utils/printUtils";
+import { getServices } from "../../axios/ApiCalls";
+import DropDownButton from "../../components/buttons/DropDownButton";
 import EditIcon from "@mui/icons-material/Edit";
 import ArchiveIcon from "@mui/icons-material/Archive";
-import { useModal } from "../contexts/ModalContext";
+import AddIcon from "@mui/icons-material/Add";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import { useModal } from "../../contexts/ModalContext";
 
-const ServiceClient = () => {
+const Services = () => {
   const tableRef = useRef();
   const { mutate } = useToggleService();
   const { mutate: archiveService } = useArchiveService();
@@ -70,6 +73,23 @@ const ServiceClient = () => {
         ref={tableRef}
         queryKeyPrefix="services"
         filterFn={filterServices}
+        actions={
+          <>
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              color="primary"
+              onClick={() =>
+                openModal("editService", {
+                  title: "Add service",
+                  service: null,
+                })
+              }
+            >
+              SERVICE
+            </Button>
+          </>
+        }
         columns={[
           { label: "ID", accessor: "id", sortable: true },
           {
@@ -110,6 +130,17 @@ const ServiceClient = () => {
               <DropDownButton
                 buttonLabel="Actions"
                 options={[
+                  {
+                    label: "Subservice",
+                    icon: <AddBoxIcon />,
+                    onClick: () =>
+                      openModal("editSubservice", {
+                        title: "Add subservice",
+                        subservice: null,
+                        service: row,
+                        refetchChildren: () => handleChildUpdated(row.id),
+                      }),
+                  },
                   {
                     label: "Edit",
                     icon: <EditIcon />,
@@ -170,6 +201,8 @@ const ServiceClient = () => {
                 <TableCell>Name</TableCell>
                 <TableCell>Description</TableCell>
                 <TableCell>Price</TableCell>
+                <TableCell>Duration</TableCell>
+                <TableCell>Capacity</TableCell>
                 <TableCell>Date</TableCell>
                 <TableCell></TableCell>
               </TableRow>
@@ -181,6 +214,8 @@ const ServiceClient = () => {
                   <TableCell>{child.name}</TableCell>
                   <TableCell>{child.description}</TableCell>
                   <TableCell>{printPrice(child.price)}</TableCell>
+                  <TableCell>{child.duration}</TableCell>
+                  <TableCell>{child.capacity}</TableCell>
                   <TableCell>{printDate(child.created_at)}</TableCell>
                   <TableCell>
                     <DropDownButton
@@ -215,4 +250,4 @@ const ServiceClient = () => {
   );
 };
 
-export default ServiceClient;
+export default Services;

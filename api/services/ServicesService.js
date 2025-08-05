@@ -66,6 +66,11 @@ class ServicesService extends BaseService {
     return this.findAllByField(Tables.Subservices, "service_id", serviceId);
   }
 
+  async addService(data) {
+    const allowedFields = ["center_id", "name", "description", "color"];
+    return this.insert(Tables.Services, data, allowedFields);
+  }
+
   async editService(serviceId, data) {
     const allowedFields = ["name", "description", "color"];
     return this.update(Tables.Services, data, allowedFields, "id = $4", [
@@ -73,9 +78,28 @@ class ServicesService extends BaseService {
     ]);
   }
 
+  async addSubservice(data) {
+    const allowedFields = [
+      "service_id",
+      "name",
+      "description",
+      "price",
+      "duration",
+      "capacity",
+    ];
+    return this.insert(Tables.Subservices, data, allowedFields);
+  }
+
   async editSubservice(subserviceId, data) {
-    const allowedFields = ["name", "description", "price"];
-    return this.update(Tables.Subservices, data, allowedFields, "id = $4", [
+    const allowedFields = [
+      "name",
+      "description",
+      "price",
+      "duration",
+      "capacity",
+    ];
+
+    return this.update(Tables.Subservices, data, allowedFields, "id = $6", [
       subserviceId,
     ]);
   }

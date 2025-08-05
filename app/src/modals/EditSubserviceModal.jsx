@@ -9,20 +9,38 @@ import {
   Alert,
 } from "@mui/material";
 import PricePicker from "../components/PricePicker";
-import { useUpdateSubservice } from "../hooks/apiHooks/useSubservices";
+import {
+  useAddSubservice,
+  useUpdateSubservice,
+} from "../hooks/apiHooks/useSubservices";
 
 export default function EditSubserviceModal({
   open,
   onClose,
+  title = "Edit subservice",
   subservice,
+  service = null,
   refetchChildren,
 }) {
-  const { mutate, isLoading, isError, error } = useUpdateSubservice();
+  const {
+    mutate: editSubservice,
+    isLoadingEdit,
+    isErrorEdit,
+    errorEdit,
+  } = useUpdateSubservice();
+  const {
+    mutate: addSubservice,
+    isLoadingAdd,
+    isErrorAdd,
+    errorAdd,
+  } = useAddSubservice();
 
   const [formData, setFormData] = useState({
-    name: subservice.name,
-    description: subservice.description,
-    price: subservice.price,
+    name: subservice?.name || "",
+    description: subservice?.description || "",
+    price: subservice?.price || 0,
+    duration: subservice?.duration || 30,
+    capacity: subservice?.capacity || 1,
   });
   const [errors, setErrors] = useState({});
 
@@ -39,6 +57,8 @@ export default function EditSubserviceModal({
     if (!formData.name.trim()) newErrors.name = true;
     if (!formData.description.trim()) newErrors.description = true;
     if (!formData.price) newErrors.price = true;
+    if (!formData.duration) newErrors.duration = true;
+    if (!formData.capacity) newErrors.capacity = true;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -47,20 +67,36 @@ export default function EditSubserviceModal({
     if (!validate()) {
       return;
     }
-    mutate(
-      { subserviceId: subservice.id, data: formData },
-      {
-        onSuccess: () => {
-          refetchChildren();
-          onClose();
-        },
-      }
-    );
+    if (!subservice) {
+      addSubservice(
+        { serviceId: service.id, ...formData },
+        {
+          onSuccess: () => {
+            refetchChildren();
+            onClose();
+          },
+        }
+      );
+    } else {
+      editSubservice(
+        { subserviceId: subservice.id, data: formData },
+        {
+          onSuccess: () => {
+            refetchChildren();
+            onClose();
+          },
+        }
+      );
+    }
   };
+
+  const isLoading = isLoadingEdit || isLoadingAdd;
+  const error = errorEdit || errorAdd;
+  const isError = isErrorEdit || isErrorAdd;
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>Edit subservice</DialogTitle>
+      <DialogTitle>{title}</DialogTitle>
       <DialogContent dividers>
         <TextField
           label="Name"
@@ -90,6 +126,30 @@ export default function EditSubserviceModal({
           required={true}
           error={!!errors.price}
           helperText={errors.price ? "Price is required" : ""}
+        />
+        <TextField
+          label="Duration"
+          type="number"
+          name="duration"
+          fullWidth
+          margin="normal"
+          value={formData.duration}
+          error={!!errors.duration}
+          helperText={errors.duration ? "Duration is required" : ""}
+          onChange={handleChange}
+          required
+        />
+        <TextField
+          label="Capacity"
+          type="number"
+          name="capacity"
+          fullWidth
+          margin="normal"
+          value={formData.capacity}
+          error={!!errors.capacity}
+          helperText={errors.capacity ? "Capacity is required" : ""}
+          onChange={handleChange}
+          required
         />
         {isError && (
           <Alert severity="error" sx={{ mt: 2 }}>

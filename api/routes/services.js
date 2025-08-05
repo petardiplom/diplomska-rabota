@@ -1,6 +1,8 @@
 import express from "express";
 import { requireCenterAccess } from "../middlewares/centerMiddleware.js";
 import {
+  addService,
+  addSubservice,
   archiveService,
   editService,
   editSubservice,
@@ -31,6 +33,14 @@ router.get(
   getCenterSubservices
 );
 
+router.post("/services", authenticateUser, requireCenterAccess, addService);
+router.post(
+  "/subservices",
+  authenticateUser,
+  requireCenterAccess,
+  addSubservice
+);
+
 router
   .route("/services/:serviceId/status")
   .patch(authenticateUser, toggleServiceStatus);
@@ -40,6 +50,7 @@ router
 router
   .route("/services/:serviceId/restore")
   .patch(authenticateUser, restoreService);
+
 router.route("/services/:serviceId").patch(authenticateUser, editService);
 
 router

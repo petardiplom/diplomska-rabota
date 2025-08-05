@@ -49,6 +49,51 @@ export const getCenterSubservices = async (req, res, next) => {
   }
 };
 
+//POST
+
+export const addService = async (req, res, next) => {
+  try {
+    const center = req.center;
+    const { name, description, color } = req.body;
+
+    console.log("CENTER", center);
+    console.log("name, description, color", name, description, color);
+
+    const service = await servicesService.addService({
+      center_id: center.id,
+      name,
+      description,
+      color,
+    });
+    return res.json(service);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const addSubservice = async (req, res, next) => {
+  try {
+    const { serviceId, name, description, price, duration, capacity } =
+      req.body;
+
+    if (!serviceId) {
+      throw new defaultError("400", "Invalid input, no service id");
+    }
+
+    const subservice = await servicesService.addSubservice({
+      service_id: serviceId,
+      name,
+      description,
+      price,
+      duration,
+      capacity,
+    });
+    return res.json(subservice);
+  } catch (error) {
+    next(error);
+  }
+};
+
 //PATCH
 export const toggleServiceStatus = async (req, res, next) => {
   try {
@@ -89,12 +134,14 @@ export const editService = async (req, res, next) => {
 export const editSubservice = async (req, res, next) => {
   try {
     const { subserviceId } = req.params;
-    const { name, description, price } = req.body;
+    const { name, description, price, duration, capacity } = req.body;
 
     const subservice = await servicesService.editSubservice(subserviceId, {
       name,
       description,
       price,
+      duration,
+      capacity,
     });
     return res.json(subservice);
   } catch (error) {
