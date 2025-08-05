@@ -26,7 +26,7 @@ class ScheduleService extends BaseService {
             ) AS breaks
         FROM ${Tables.Schedules} sched
         LEFT JOIN ${Tables.ScheduleBreaks} sb ON sb.schedule_id = sched.id
-        WHERE sched.center_id = $1 AND sched.staff_id IS NULL
+        WHERE sched.center_id = $1 AND sched.center_staff_id IS NULL
         GROUP BY sched.id, sched.day_of_week, sched.is_closed, sched.work_start, sched.work_end
         ORDER BY sched.day_of_week;
     `;

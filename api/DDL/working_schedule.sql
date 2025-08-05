@@ -1,12 +1,12 @@
 CREATE TABLE working_schedules (
     id SERIAL PRIMARY KEY,
     center_id INTEGER REFERENCES centers(id) ON DELETE CASCADE,
-    staff_id INTEGER REFERENCES users(id) ON DELETE CASCADE, -- NULL = applies to whole center
+    center_staff_id INTEGER REFERENCES center_staff(id) ON DELETE CASCADE,
     day_of_week SMALLINT NOT NULL CHECK (day_of_week BETWEEN 1 AND 7), -- 7 = Sunday
     is_closed BOOLEAN DEFAULT FALSE,
     work_start TIME,
     work_end TIME,
-    UNIQUE(center_id, staff_id, day_of_week),
+    UNIQUE(center_id, center_staff_id, day_of_week),
     CHECK (
         (is_closed = TRUE AND work_start IS NULL AND work_end IS NULL)
         OR
@@ -15,7 +15,7 @@ CREATE TABLE working_schedules (
     CHECK (work_start < work_end)
 );
 
-INSERT INTO working_schedules (center_id, staff_id, day_of_week, is_closed, work_start, work_end)
+INSERT INTO working_schedules (center_id, center_staff_id, day_of_week, is_closed, work_start, work_end)
 VALUES 
   (1, NULL, 1, FALSE, '09:00', '17:00'),
   (1, NULL, 2, FALSE, '10:00', '16:00'),
