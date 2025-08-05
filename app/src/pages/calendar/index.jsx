@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import {
   format,
