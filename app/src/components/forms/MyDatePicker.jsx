@@ -1,13 +1,13 @@
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-const MyTimePicker = (props) => {
+const MyDatePicker = (props) => {
   return (
-    <TimePicker
-      ampm={false}
+    <DatePicker
       slotProps={{
         textField: {
           variant: "outlined",
           size: "small",
+          label: props?.label || "Date",
           error: props?.error,
           helperText: props?.error,
           required: true,
@@ -18,4 +18,4 @@ const MyTimePicker = (props) => {
   );
 };
 
-export default MyTimePicker;
+export default MyDatePicker;
