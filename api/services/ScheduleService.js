@@ -2,7 +2,7 @@ import pool from "../db.js";
 import { BaseService } from "./BaseService.js";
 import { Tables } from "./tables.js";
 
-class ScheduleService extends BaseService {
+export class ScheduleService extends BaseService {
   constructor(db) {
     super(db);
   }

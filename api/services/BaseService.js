@@ -1,3 +1,4 @@
+import { getAvailableTimeslots } from "../utils/timeslotUtils.js";
 import { buildInsertQuery, buildUpdateQuery } from "./utils.js";
 
 export class BaseService {
@@ -68,5 +69,23 @@ export class BaseService {
     );
     const result = await this.db.query(query, values);
     return result.rows[0];
+  }
+
+  async getAvailableTimeslots(
+    date,
+    centerSchedule,
+    staffSchedule,
+    reservations = [],
+    serviceDuration = 90,
+    slotDuration = 30
+  ) {
+    return getAvailableTimeslots(
+      date,
+      centerSchedule,
+      staffSchedule,
+      reservations,
+      serviceDuration,
+      slotDuration
+    );
   }
 }
