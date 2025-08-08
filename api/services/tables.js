@@ -6,6 +6,7 @@ export const Tables = {
   Users: "users",
   Services: "services",
   Subservices: "subservices",
+  SubserviceStaff: "subservice_staff",
   Schedules: "working_schedules",
   ScheduleBreaks: "work_breaks ",
 };

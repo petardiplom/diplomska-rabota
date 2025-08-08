@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -13,6 +13,8 @@ import {
   useAddSubservice,
   useUpdateSubservice,
 } from "../hooks/apiHooks/useSubservices";
+import { useStaff } from "../hooks/apiHooks/useStaff";
+import Autocomplete from "../components/forms/Autocomplete";
 
 export default function EditSubserviceModal({
   open,
@@ -35,12 +37,33 @@ export default function EditSubserviceModal({
     errorAdd,
   } = useAddSubservice();
 
+  const { data: staff } = useStaff();
+
+  const [selectedStaff, setSelectedStaff] = useState([]);
+  const [staffOptions, setStaffOptions] = useState([]);
+
+  useEffect(() => {
+    if (staff?.length) {
+      const so = staff?.map((x) => ({
+        value: x.id,
+        label: x.email,
+      }));
+      const subserviceStaffIds = subservice?.staff?.map((x) => x.id) || [];
+      const preselected = so?.filter((x) =>
+        subserviceStaffIds.includes(x.value)
+      );
+      setStaffOptions(so);
+      setSelectedStaff(preselected);
+    }
+  }, [staff, subservice]);
+
   const [formData, setFormData] = useState({
     name: subservice?.name || "",
     description: subservice?.description || "",
     price: subservice?.price || 0,
     duration: subservice?.duration || 30,
     capacity: subservice?.capacity || 1,
+    staff: subservice?.staff || [],
   });
   const [errors, setErrors] = useState({});
 
@@ -99,6 +122,7 @@ export default function EditSubserviceModal({
       <DialogTitle>{title}</DialogTitle>
       <DialogContent dividers>
         <TextField
+          size="small"
           label="Name"
           name="name"
           fullWidth
@@ -110,6 +134,7 @@ export default function EditSubserviceModal({
           required
         />
         <TextField
+          size="small"
           label="Description"
           name="description"
           fullWidth
@@ -128,6 +153,7 @@ export default function EditSubserviceModal({
           helperText={errors.price ? "Price is required" : ""}
         />
         <TextField
+          size="small"
           label="Duration"
           type="number"
           name="duration"
@@ -140,6 +166,7 @@ export default function EditSubserviceModal({
           required
         />
         <TextField
+          size="small"
           label="Capacity"
           type="number"
           name="capacity"
@@ -150,7 +177,18 @@ export default function EditSubserviceModal({
           helperText={errors.capacity ? "Capacity is required" : ""}
           onChange={handleChange}
           required
+          slotProps={{
+            htmlInput: { min: 1 },
+          }}
         />
+        <Autocomplete
+          id="my-autocomplete"
+          onChange={(_, val) => setSelectedStaff(val)}
+          value={selectedStaff}
+          options={staffOptions}
+          size="small"
+        />
+
         {isError && (
           <Alert severity="error" sx={{ mt: 2 }}>
             {error?.response?.data?.message ||

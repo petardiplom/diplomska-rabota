@@ -3,6 +3,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 const MyDatePicker = (props) => {
   return (
     <DatePicker
+      format="dd/MM/yyyy"
       slotProps={{
         textField: {
           variant: "outlined",

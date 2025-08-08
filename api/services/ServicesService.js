@@ -63,7 +63,18 @@ class ServicesService extends BaseService {
   }
 
   async getServiceSubservices(serviceId) {
-    return this.findAllByField(Tables.Subservices, "service_id", serviceId);
+    const sql = `
+    SELECT s.*, COALESCE(jsonb_agg(jsonb_build_object('id', ss.center_staff_id, 'email', u.email)) FILTER (WHERE ss.id IS NOT NULL),
+                '[]'::jsonb
+            ) AS staff FROM ${Tables.Subservices} s
+      LEFT OUTER JOIN ${Tables.SubserviceStaff} ss ON s.id = ss.subservice_id
+      LEFT OUTER JOIN ${Tables.CenterStaff} cs ON ss.center_staff_id = cs.id
+      LEFT OUTER JOIN ${Tables.Users} u ON cs.user_id = u.id
+    WHERE s.service_id = $1
+    GROUP BY s.id
+    `;
+    const response = await this.db.query(sql, [serviceId]);
+    return response.rows;
   }
 
   async addService(data) {

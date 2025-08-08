@@ -6,6 +6,7 @@ const SelectOption = ({
   onChange,
   options = [],
   size = "small",
+  noOptionsMessage = "No options available",
   ...props
 }) => {
   return (
@@ -26,11 +27,17 @@ const SelectOption = ({
       }}
       {...props}
     >
-      {options.map((option) => (
-        <MenuItem key={option.value} value={option.value}>
-          {option.label}
+      {options.length ? (
+        options.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))
+      ) : (
+        <MenuItem value="" disabled>
+          {noOptionsMessage}
         </MenuItem>
-      ))}
+      )}
     </TextField>
   );
 };
