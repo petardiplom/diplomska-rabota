@@ -5,8 +5,8 @@ CREATE TABLE services (
     description TEXT,
     active BOOLEAN DEFAULT TRUE,
     color TEXT,
-    created_at TIMESTAMP DEFAULT NOW(),
-    archived_at TIMESTAMP,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    archived_at TIMESTAMPTZ,
 );
 
 INSERT INTO services (center_id, name, description, active, color)

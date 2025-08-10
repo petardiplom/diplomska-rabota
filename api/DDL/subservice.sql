@@ -6,8 +6,8 @@ CREATE TABLE subservices (
     price NUMERIC(10,2) NOT NULL,
     duration INTEGER NOT NULL CHECK (duration >= 0 AND duration <= 360),
     capacity INTEGER NOT NULL CHECK (capacity > 0),
-    created_at TIMESTAMP DEFAULT NOW(),
-    archived_at TIMESTAMP
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    archived_at TIMESTAMPTZ
 );
 
 INSERT INTO subservices (service_id, name, description, price, duration, capacity)

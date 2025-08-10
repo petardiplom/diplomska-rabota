@@ -6,10 +6,10 @@ CREATE TABLE event (
     name TEXT NOT NULL,
     description TEXT,
     price NUMERIC(10,2) NOT NULL,
-    starts_at TIMESTAMP NOT NULL,
+    starts_at TIMESTAMPTZ NOT NULL,
     duration_minutes INTEGER NOT NULL,
     status TEXT NOT NULL DEFAULT 'active',
-    created_at TIMESTAMP DEFAULT NOW(),
-    cancelled_at TIMESTAMP,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    cancelled_at TIMESTAMPTZ,
     cancelled_by UUID REFERENCES users(id);
 );

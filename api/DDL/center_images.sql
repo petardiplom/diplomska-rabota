@@ -5,6 +5,6 @@ CREATE TABLE center_images (
     description TEXT NOT NULL,
     image_url TEXT NOT NULL,
     type image_type NOT NULL DEFAULT 'gallery', -- profile, gallery
-    created_at TIMESTAMP DEFAULT NOW(),
-    archived_at TIMESTAMP
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    archived_at TIMESTAMPTZ
 );

@@ -6,8 +6,8 @@ CREATE TABLE customers (
     lastname TEXT NOT NULL,
     phone TEXT,
     image_url TEXT,
-    created_at TIMESTAMP DEFAULT NOW(),
-    archived_at TIMESTAMP,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    archived_at TIMESTAMPTZ,
 );
 
 INSERT INTO customers (center_id, email, firstname, lastname, phone)

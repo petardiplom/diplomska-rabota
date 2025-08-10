@@ -7,5 +7,5 @@ CREATE TABLE users (
     lastname TEXT NOT NULL,
     role user_role NOT NULL,
     image_url TEXT,
-    created_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMPTZ DEFAULT NOW()
 );

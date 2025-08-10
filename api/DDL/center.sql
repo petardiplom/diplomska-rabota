@@ -16,6 +16,6 @@ CREATE TABLE centers (
     latitude DOUBLE PRECISION,
     longitude DOUBLE PRECISION,
     -- end location
-    created_at TIMESTAMP DEFAULT NOW(),
-    archived_at TIMESTAMP
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    archived_at TIMESTAMPTZ
 );
