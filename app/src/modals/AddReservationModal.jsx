@@ -18,7 +18,7 @@ const AddReservationModal = ({ open, onClose }) => {
         </IconButton>
       </Box>
       <DialogContent dividers>
-        <CreateReservation />
+        <CreateReservation onClose={onClose} />
       </DialogContent>
     </Dialog>
   );

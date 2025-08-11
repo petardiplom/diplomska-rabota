@@ -9,4 +9,7 @@ export const Tables = {
   SubserviceStaff: "subservice_staff",
   Schedules: "working_schedules",
   ScheduleBreaks: "work_breaks ",
+  Reservations: "reservations",
+  Subscriptions: "subscriptions",
+  Orders: "customer_orders",
 };

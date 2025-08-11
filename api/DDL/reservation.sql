@@ -6,6 +6,7 @@ CREATE TABLE reservations (
     staff_id INTEGER REFERENCES center_staff(id),
     price NUMERIC(10,2) NOT NULL,
     start_time TIMESTAMPTZ NOT NULL,
+    end_time TIMESTAMPTZ NOT NULL,
     duration INTEGER NOT NULL,
     status reservation_status NOT NULL DEFAULT 'active',
     created_at TIMESTAMPTZ DEFAULT NOW(),

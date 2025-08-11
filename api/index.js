@@ -6,6 +6,7 @@ import servicesRoutes from "./routes/services.js";
 import scheduleRoutes from "./routes/schedules.js";
 import timeslotRoutes from "./routes/timeslots.js";
 import staffRoutes from "./routes/staff.js";
+import reservationRoutes from "./routes/reservations.js";
 import customerRoutes from "./routes/customers.js";
 import errorMiddleware from "./middlewares/errorMiddleware.js";
 
@@ -21,6 +22,7 @@ app.use("/api", scheduleRoutes);
 app.use("/api", staffRoutes);
 app.use("/api", customerRoutes);
 app.use("/api", timeslotRoutes);
+app.use("/api", reservationRoutes);
 
 // 404 handler
 app.use((req, _, next) => {

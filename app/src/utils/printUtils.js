@@ -9,6 +9,12 @@ export const printPrice = (value, currency = "EUR", locale = "de-DE") => {
   }).format(value);
 };
 
+export const printInputDate = (date) => {
+  const parsed = new Date(date);
+  if (!isValid(parsed)) return "";
+  return format(date, "yyyy-MM-dd");
+};
+
 export const printDate = (date, locale = enGB) => {
   const parsed = new Date(date);
   if (!isValid(parsed)) return "";

@@ -1,4 +1,5 @@
 import { getAvailableTimeslots } from "../utils/timeslotUtils.js";
+import { Tables } from "./tables.js";
 import { buildInsertQuery, buildUpdateQuery } from "./utils.js";
 
 export class BaseService {
@@ -39,7 +40,7 @@ export class BaseService {
     return result.rows;
   }
 
-  async insert(table, data, allowedFields, returning = "*") {
+  async insert(table, data, allowedFields, client = this.db, returning = "*") {
     const { query, values } = buildInsertQuery(
       table,
       data,
@@ -47,7 +48,7 @@ export class BaseService {
       returning
     );
 
-    const result = await this.db.query(query, values);
+    const result = await client.query(query, values);
     return result.rows[0];
   }
 
@@ -57,6 +58,7 @@ export class BaseService {
     allowedFields,
     whereClause,
     whereValues,
+    client = this.db,
     returning = "*"
   ) {
     const { query, values } = buildUpdateQuery(
@@ -67,7 +69,7 @@ export class BaseService {
       whereValues,
       returning
     );
-    const result = await this.db.query(query, values);
+    const result = await client.query(query, values);
     return result.rows[0];
   }
 
@@ -87,5 +89,41 @@ export class BaseService {
       serviceDuration,
       slotDuration
     );
+  }
+
+  async createOrder(
+    center_id,
+    customer_id,
+    reservation_id,
+    subscription_id,
+    created_by,
+    price,
+    payment_method,
+    client = this.db
+  ) {
+    const allowedFields = [
+      "center_id",
+      "customer_id",
+      "reservation_id",
+      "subscription_id",
+      "created_by",
+      "price",
+      "payment_method",
+    ];
+    const order = await this.insert(
+      Tables.Orders,
+      {
+        center_id,
+        customer_id,
+        reservation_id,
+        subscription_id,
+        created_by,
+        price,
+        payment_method,
+      },
+      allowedFields,
+      client
+    );
+    return order;
   }
 }

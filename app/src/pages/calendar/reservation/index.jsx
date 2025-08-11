@@ -20,6 +20,7 @@ import {
   printDateTime,
   printPrice,
   printTime,
+  printInputDate,
 } from "../../../utils/printUtils";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -30,6 +31,7 @@ import {
   useStaffSchedule,
 } from "../../../hooks/apiHooks/useCenterSchedule";
 import { useTimeslots } from "../../../hooks/apiHooks/useTimeslots";
+import { useCreateReservation } from "../../../hooks/apiHooks/useReservations";
 
 const steps = ["Customer | Service | Subservice", "Staff | Time period"];
 
@@ -38,7 +40,7 @@ const disabledDays = (date, disabledDays = []) => {
   return disabledDays.includes(day);
 };
 
-const CreateReservation = () => {
+const CreateReservation = ({ onClose }) => {
   const [activeStep, setActiveStep] = useState(0);
 
   const [selectedCustomer, setSelectedCustomer] = useState("");
@@ -47,6 +49,8 @@ const CreateReservation = () => {
   const [selectedStaff, setSelectedStaff] = useState("");
   const [selectedTimeslot, setSelectedTimeslot] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
+
+  const { mutate: createReservation } = useCreateReservation();
 
   const { data: customers, isLoading: customersLoading } = useCustomers();
   const { data: services, isLoading: servicesLoading } = useServices();
@@ -62,6 +66,23 @@ const CreateReservation = () => {
 
   const { data: timeslotOptions = [], isLoading: timeslotsLoading } =
     useTimeslots(selectedDate, selectedStaff);
+
+  const handleFinish = () => {
+    const data = {
+      customer_id: selectedCustomer,
+      subservice_id: selectedSubservice,
+      staff_id: selectedStaff,
+      price: subserviceObject.price,
+      duration: subserviceObject.duration,
+      date: printInputDate(selectedDate),
+      timeslot: selectedTimeslot,
+    };
+    createReservation(data, {
+      onSuccess: () => {
+        onClose();
+      },
+    });
+  };
 
   const handleNext = () => {
     if (activeStep < steps.length - 1) setActiveStep((prev) => prev + 1);
@@ -330,7 +351,9 @@ const CreateReservation = () => {
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={handleNext}
+                onClick={
+                  activeStep === steps.length - 1 ? handleFinish : handleNext
+                }
                 disabled={!isStepComplete[activeStep]}
               >
                 {activeStep === steps.length - 1 ? "Finish" : "Next"}
