@@ -1,33 +1,31 @@
 import {
-  parse,
   format,
   addMinutes,
   isBefore,
   isAfter,
-  isEqual,
   getISODay,
   max,
   min,
 } from "date-fns";
+import { toDate } from "date-fns-tz";
 
-const toDateTime = (date, time) =>
-  parse(
-    `${format(date, "yyyy-MM-dd")} ${time}`,
-    "yyyy-MM-dd HH:mm:ss",
-    new Date()
-  );
+// TODO get timezone from center
+export const toDateTimeTZ = (date, time, timezone = "Europe/Skopje") => {
+  const localDateTimeStr = `${format(date, "yyyy-MM-dd")} ${time}`;
+  return toDate(localDateTimeStr, { timeZone: timezone });
+};
 
 const getActivePeriod = (schedule, date) => {
   const day = getISODay(date);
   const entry = schedule.find((s) => s.day_of_week === day);
   if (!entry) return null;
   const breaks = entry.breaks?.map((b) => ({
-    start: toDateTime(date, b.break_start),
-    end: toDateTime(date, b.break_end),
+    start: toDateTimeTZ(date, b.break_start),
+    end: toDateTimeTZ(date, b.break_end),
   }));
   return {
-    start: toDateTime(date, entry.work_start),
-    end: toDateTime(date, entry.work_end),
+    start: toDateTimeTZ(date, entry.work_start),
+    end: toDateTimeTZ(date, entry.work_end),
     breaks,
   };
 };
