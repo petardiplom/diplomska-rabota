@@ -12,6 +12,7 @@ import {
   Collections,
   Groups,
   Group,
+  Receipt,
 } from "@mui/icons-material";
 
 export const getDrawerItems = (centerId) => {
@@ -20,6 +21,11 @@ export const getDrawerItems = (centerId) => {
       text: "Dashboard",
       icon: <DashboardIcon />,
       path: centerId ? `/centers/${centerId}/dashboard` : "/centers",
+    },
+    {
+      text: "Orders",
+      icon: <Receipt />,
+      path: centerId ? `/centers/${centerId}/orders` : "/centers",
     },
     {
       text: "Calendar",

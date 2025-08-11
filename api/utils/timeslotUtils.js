@@ -9,8 +9,10 @@ import {
 } from "date-fns";
 import { toDate } from "date-fns-tz";
 
+const TIMEZONE = "Europe/Skopje";
+
 // TODO get timezone from center
-export const toDateTimeTZ = (date, time, timezone = "Europe/Skopje") => {
+export const toDateTimeTZ = (date, time, timezone = TIMEZONE) => {
   const localDateTimeStr = `${format(date, "yyyy-MM-dd")} ${time}`;
   return toDate(localDateTimeStr, { timeZone: timezone });
 };
@@ -70,7 +72,8 @@ export const getAvailableTimeslots = (
   if (!center || !staff) return [];
 
   // center and staff overlap start and end
-  const start = max([center.start, staff.start]);
+  const now = toDate(new Date(), { timeZone: TIMEZONE });
+  const start = max([now, center.start, staff.start]);
   const end = min([center.end, staff.end]);
 
   const rawSlots = generateTimeSlots(start, end, slotInterval, serviceDuration);

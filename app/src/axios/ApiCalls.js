@@ -6,6 +6,11 @@ export const getServices = async () => {
   return response.data;
 };
 
+export const getOrders = async () => {
+  const response = await api.get("/orders");
+  return response.data;
+};
+
 export const getArchivedServices = async () => {
   const response = await api.get("/services/archived");
   return response.data;

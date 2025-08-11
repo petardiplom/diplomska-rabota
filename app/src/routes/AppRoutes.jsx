@@ -15,6 +15,7 @@ import ArchivedCustomers from "../pages/archived/ArchivedCustomers";
 import Services from "../pages/services";
 import CenterSchedule from "../pages/schedule/CenterSchedule";
 import StaffSchedule from "../pages/schedule/StaffSchedule";
+import Orders from "../pages/orders";
 
 function AppRoutes() {
   return (
@@ -27,6 +28,7 @@ function AppRoutes() {
 
         <Route path="/centers/:centerId" element={<CenterLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="orders" element={<Orders />} />
           <Route path="calendar" element={<ReservationCalendar />} />
           <Route path="customers" element={<Customers />} />
           <Route path="customers/archived" element={<ArchivedCustomers />} />
