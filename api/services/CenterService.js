@@ -25,6 +25,7 @@ class CenterService extends BaseService {
     const allowedFields = [
       "owner_id",
       "name",
+      "description",
       "email",
       "phone",
       "address",
@@ -38,7 +39,21 @@ class CenterService extends BaseService {
       "longitude",
     ];
 
-    return this.insert(Tables.Centers, data, allowedFields);
+    await this.withTransaction(async (client) => {
+      const center = await this.insert(
+        Tables.Centers,
+        data,
+        allowedFields,
+        client
+      );
+      await this.insert(
+        Tables.CenterStaff,
+        { center_id: center.id, user_id: data.owner_id, role: "owner" },
+        ["center_id", "user_id", "role"],
+        client
+      );
+      return center;
+    });
   }
 
   async updateCenter(centerId, data) {
