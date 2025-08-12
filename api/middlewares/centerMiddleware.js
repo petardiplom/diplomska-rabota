@@ -12,7 +12,9 @@ export const requireCenterAccess = async (req, res, next) => {
 
   try {
     const result = await db.query(
-      `SELECT * FROM centers WHERE id = $1 AND owner_id = $2`,
+      `SELECT DISTINCT c.* FROM centers c
+        LEFT OUTER JOIN center_staff cs ON c.id = cs.center_id
+       WHERE c.id = $1 AND (c.owner_id = $2 OR cs.user_id = $2)`,
       [centerId, req.user.id]
     );
 

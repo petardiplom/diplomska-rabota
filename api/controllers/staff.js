@@ -24,3 +24,15 @@ export const getSubserviceStaff = async (req, res, next) => {
     next(error);
   }
 };
+
+//POST
+export const addCenterStaff = async (req, res, next) => {
+  try {
+    const center = req.center;
+    const data = req.body;
+    const staff = await staffService.addCenterStaff(center.id, data);
+    return res.json(staff);
+  } catch (error) {
+    next(error);
+  }
+};

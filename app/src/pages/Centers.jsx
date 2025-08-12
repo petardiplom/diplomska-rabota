@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useModal } from "../contexts/ModalContext";
 import Spinner from "../components/spinner/Spinner";
 import { useCenter } from "../contexts/CenterContext";
+import { useAuth } from "../contexts/AuthContext";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -12,6 +13,7 @@ const Centers = () => {
   const [page, setPage] = useState(1);
 
   const { data, isLoading, isError } = useCenters();
+  const { dbUser } = useAuth();
   const { resetCenter } = useCenter();
   const { openModal } = useModal();
 
@@ -35,6 +37,7 @@ const Centers = () => {
     (page - 1) * ITEMS_PER_PAGE,
     page * ITEMS_PER_PAGE
   );
+
   return (
     <>
       <Container sx={{ mt: 4 }}>
@@ -43,6 +46,7 @@ const Centers = () => {
             onClick={handleCreateCenter}
             color="primary"
             variant="contained"
+            disabled={dbUser?.role !== "owner"}
           >
             ADD CENTER
           </Button>

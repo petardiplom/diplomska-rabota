@@ -1,7 +1,11 @@
 import express from "express";
 import { authenticateUser } from "../middlewares/authMiddleware.js";
 import { requireCenterAccess } from "../middlewares/centerMiddleware.js";
-import { getCenterStaff, getSubserviceStaff } from "../controllers/staff.js";
+import {
+  addCenterStaff,
+  getCenterStaff,
+  getSubserviceStaff,
+} from "../controllers/staff.js";
 
 const router = express.Router();
 
@@ -12,4 +16,6 @@ router.get(
   requireCenterAccess,
   getSubserviceStaff
 );
+
+router.post("/staff", authenticateUser, requireCenterAccess, addCenterStaff);
 export default router;

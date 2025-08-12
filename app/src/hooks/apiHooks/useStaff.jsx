@@ -1,6 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import api from "../../axios/axios";
 import { useCenter } from "../../contexts/CenterContext";
+import { toast } from "react-toastify";
 
 const STAFF_QUERY_KEY = "staff";
 const SUBSERVICE_STAFF_QUERY_KEY = "subservice_staff";
@@ -25,5 +26,19 @@ export const useSubserviceStaff = (subserviceId) => {
       return response.data;
     },
     enabled: !!subserviceId,
+  });
+};
+
+export const useAddCenterStaff = () => {
+  const { centerId } = useCenter();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => api.post("/staff", data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [STAFF_QUERY_KEY, centerId],
+      });
+      toast.success("Staff added!");
+    },
   });
 };

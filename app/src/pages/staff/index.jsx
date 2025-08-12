@@ -1,18 +1,37 @@
 import ClientTable from "../../components/table/ClientTable";
 import DropDownButton from "../../components/buttons/DropDownButton";
-import { Box, Chip, TextField } from "@mui/material";
+import { Box, Button, Chip, TextField } from "@mui/material";
 import { useState } from "react";
 import { getStaff } from "../../axios/ApiCalls";
 import EditIcon from "@mui/icons-material/Edit";
 import ArchiveIcon from "@mui/icons-material/Archive";
+import AddIcon from "@mui/icons-material/Add";
 import SelectOption from "../../components/forms/SelectOption";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import { useNavigate } from "react-router-dom";
 import { useCenter } from "../../contexts/CenterContext";
+import { useModal } from "../../contexts/ModalContext";
+
+const getRoleColor = (role) => {
+  if (role === "owner") {
+    return "error"; //color
+  }
+  if (role === "manager") {
+    return "primary";
+  }
+
+  if (role === "staff") {
+    return "success";
+  }
+
+  return "secondary";
+};
 
 const Staff = () => {
   const [search, setSearch] = useState("");
   const [role, setRole] = useState("all");
+
+  const { openModal } = useModal();
 
   const { centerId } = useCenter();
 
@@ -43,6 +62,22 @@ const Staff = () => {
       title="Staff"
       queryKeyPrefix="staff"
       filterFn={filterStaff}
+      actions={
+        <>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            color="primary"
+            onClick={() =>
+              openModal("addStaff", {
+                title: "Add staff",
+              })
+            }
+          >
+            STAFF
+          </Button>
+        </>
+      }
       columns={[
         { label: "ID", accessor: "id", sortable: true },
         { label: "Name", accessor: "username", sortable: true },
@@ -50,9 +85,7 @@ const Staff = () => {
         {
           label: "Role",
           accessor: "role",
-          render: (val) => (
-            <Chip label={val} color={val === "owner" ? "error" : "primary"} />
-          ),
+          render: (val) => <Chip label={val} color={getRoleColor(val)} />,
         },
         {
           label: "Actions",

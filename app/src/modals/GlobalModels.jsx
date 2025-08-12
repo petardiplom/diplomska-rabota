@@ -1,5 +1,6 @@
 import { useModal } from "../contexts/ModalContext";
 import AddCenterModal from "./AddCenterModal";
+import AddStaffModal from "./AddCenterStaff";
 import AddCustomerModal from "./AddCustomerModal";
 import AddReservationModal from "./AddReservationModal";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
@@ -19,6 +20,7 @@ const MODAL_COMPONENTS = {
   createReservation: AddReservationModal,
   addCustomer: AddCustomerModal,
   editCustomer: EditCustomerModal,
+  addStaff: AddStaffModal,
 };
 
 const GlobalModals = () => {

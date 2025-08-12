@@ -8,7 +8,13 @@ class CenterService extends BaseService {
   }
 
   async getUserCenters(userId) {
-    return this.findAllByField(Tables.Centers, "owner_id", userId);
+    const sql = `
+      SELECT DISTINCT c.* FROM centers c
+        LEFT OUTER JOIN center_staff cs ON c.id = cs.center_id
+      WHERE (c.owner_id = $1 OR cs.user_id = $1)`;
+
+    const centers = await this.db.query(sql, [userId]);
+    return centers.rows || [];
   }
 
   async getCenterById(centerId) {
