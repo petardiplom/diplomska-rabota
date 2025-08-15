@@ -18,31 +18,31 @@ const images = [
     id: 1,
     title: "Beautiful Landscape",
     description: "A breathtaking view of mountains during sunset.",
-    imageUrl: "https://picsum.photos/id/1018/800/600",
+    imageUrl: "/landscape.jpg",
   },
   {
     id: 2,
     title: "City Skyline",
     description: "The city lights up as the night falls.",
-    imageUrl: "https://picsum.photos/id/1015/800/600",
+    imageUrl: "/skyline.jpg",
   },
   {
     id: 3,
     title: "Forest Path",
     description: "A serene path through a dense forest.",
-    imageUrl: "https://picsum.photos/id/1011/800/600",
+    imageUrl: "/forest.jpg",
   },
   {
     id: 4,
     title: "Beach Vibes",
     description: "Relaxing beach with golden sand and blue water.",
-    imageUrl: "https://picsum.photos/id/1016/800/600",
+    imageUrl: "/beach.jpg",
   },
   {
     id: 5,
-    title: "Beautiful Landscape",
-    description: "A breathtaking view of mountains during sunset.",
-    imageUrl: "https://picsum.photos/id/1018/800/600",
+    title: "Snowy Peaks",
+    description: "Crisp air and white mountain tops.",
+    imageUrl: "/mountains.jpg",
   },
 ];
 
