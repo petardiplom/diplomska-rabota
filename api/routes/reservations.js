@@ -2,6 +2,7 @@ import express from "express";
 import { authenticateUser } from "../middlewares/authMiddleware.js";
 import { requireCenterAccess } from "../middlewares/centerMiddleware.js";
 import {
+  cancelReservation,
   createCenterReservation,
   getCenterReservations,
 } from "../controllers/reservations.js";
@@ -20,6 +21,13 @@ router.post(
   authenticateUser,
   requireCenterAccess,
   createCenterReservation
+);
+
+router.patch(
+  "/reservations/:reservationId/cancel",
+  authenticateUser,
+  requireCenterAccess,
+  cancelReservation
 );
 
 export default router;

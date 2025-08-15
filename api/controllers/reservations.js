@@ -31,3 +31,17 @@ export const createCenterReservation = async (req, res, next) => {
     next(error);
   }
 };
+
+//PATCH
+export const cancelReservation = async (req, res, next) => {
+  try {
+    const { reservationId } = req.params;
+    const reservation = await reservationService.cancelReservation(
+      reservationId,
+      req.user.id
+    );
+    return res.json(reservation);
+  } catch (error) {
+    next(error);
+  }
+};

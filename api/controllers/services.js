@@ -74,7 +74,7 @@ export const addSubservice = async (req, res, next) => {
       req.body;
 
     if (!serviceId) {
-      throw new defaultError("400", "Invalid input, no service id");
+      throw new defaultError(400, "Invalid input, no service id");
     }
 
     const subservice = await servicesService.addSubservice({

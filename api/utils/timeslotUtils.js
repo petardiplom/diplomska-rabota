@@ -9,12 +9,16 @@ import {
 } from "date-fns";
 import { toDate } from "date-fns-tz";
 
-const TIMEZONE = "Europe/Skopje";
+export const TIMEZONE = "Europe/Skopje";
 
 // TODO get timezone from center
 export const toDateTimeTZ = (date, time, timezone = TIMEZONE) => {
   const localDateTimeStr = `${format(date, "yyyy-MM-dd")} ${time}`;
   return toDate(localDateTimeStr, { timeZone: timezone });
+};
+
+export const getNowTimestamp = () => {
+  return toDate(new Date(), { timeZone: TIMEZONE });
 };
 
 const getActivePeriod = (schedule, date) => {

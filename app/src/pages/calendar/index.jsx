@@ -107,6 +107,11 @@ const ReservationCalendar = () => {
               backgroundColor: isDarkMode ? "#1a1a1a" : "#fff",
             },
 
+            "& .rbc-show-more": {
+              background: "none",
+              color: isDarkMode ? "#fff" : "default",
+            },
+
             "& .rbc-time-slot, & .rbc-day-bg, & .rbc-time-content > * + *": {
               borderColor: isDarkMode ? "#444" : "#ddd",
             },
@@ -116,11 +121,9 @@ const ReservationCalendar = () => {
             },
 
             "& .rbc-event": {
-              borderRadius: "6px",
+              borderRadius: "2px",
               minHeight: "40px",
-              boxShadow: isDarkMode
-                ? "0 0 8px 1px rgba(25, 118, 210, 0.6)"
-                : "0 2px 5px rgba(0,0,0,0.15)",
+              boxShadow: "none",
             },
             "& .rbc-event-label": {
               fontWeight: "700",
@@ -184,13 +187,17 @@ const ReservationCalendar = () => {
                 event: ({ event }) => <MonthEventComponent event={event} />,
               },
             }}
-            eventPropGetter={(event) => ({
-              style: {
+            eventPropGetter={(event) => {
+              let style = {
                 backgroundColor: event.color,
                 color: "#fff",
                 border: 0,
-              },
-            })}
+              };
+              if (event.status === "cancelled") {
+                style.opacity = 0.7;
+              }
+              return { style };
+            }}
             // popup
           />
         </Box>

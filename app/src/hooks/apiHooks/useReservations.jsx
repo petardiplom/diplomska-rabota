@@ -25,3 +25,20 @@ export const useCreateReservation = () => {
     },
   });
 };
+
+export const useCancelReservation = () => {
+  const { centerId } = useCenter();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ reservationId }) =>
+      api.patch(`/reservations/${reservationId}/cancel`),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: [CALENDAR_EVENTS_QUERY_KEY, centerId],
+        }),
+      ]);
+      toast.success("Service archived!");
+    },
+  });
+};

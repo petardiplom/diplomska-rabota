@@ -1,8 +1,9 @@
 import { addMinutes } from "date-fns";
 import pool from "../db.js";
-import { toDateTimeTZ } from "../utils/timeslotUtils.js";
+import { getNowTimestamp, toDateTimeTZ } from "../utils/timeslotUtils.js";
 import { BaseService } from "./BaseService.js";
 import { Tables } from "./tables.js";
+import { defaultError } from "../error.js";
 
 export class ReservationService extends BaseService {
   constructor(db) {
@@ -15,6 +16,25 @@ export class ReservationService extends BaseService {
 
   async getCustomerReservations(customer_id) {
     return this.findAllByField(Tables.Reservations, "customer_id", customer_id);
+  }
+
+  async cancelReservation(reservation_id, user_id) {
+    const staffResponse = await this.db.query(
+      `SELECT id FROM ${Tables.CenterStaff} WHERE user_id = $1`,
+      [user_id]
+    );
+    const staff = staffResponse.rows[0];
+
+    if (!staff?.id) {
+      throw defaultError(500, "Cannot cancel, staff not found!");
+    }
+
+    const currentTimestamp = getNowTimestamp();
+
+    console.log("CURRENT TIMESTAMP!!", currentTimestamp);
+
+    const sql = `UPDATE ${Tables.Reservations} SET status = 'cancelled', cancelled_at = $2, cancelled_by = $3 WHERE id = $1`;
+    return this.db.query(sql, [reservation_id, currentTimestamp, staff.id]);
   }
 
   async createCenterReservation(data) {

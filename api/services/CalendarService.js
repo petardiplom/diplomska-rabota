@@ -18,7 +18,7 @@ class CalendarService extends BaseService {
                 INNER JOIN ${Tables.Users} u ON cs.user_id = u.id
             WHERE cs.center_id = $1
         )
-        SELECT r.id AS id, r.id AS reservation_id, s.name AS title, s.color, ss.name AS subservice_name, c.email AS customer_email, su.email AS staff_email, r.start_time AS start, r.end_time AS end, r.duration, r.price, r.status
+        SELECT r.id AS id, r.id AS reservation_id, s.name AS title, s.color, ss.name AS subservice_name, c.email AS customer_email, su.email AS staff_email, r.start_time AS start, r.end_time AS end, r.duration, r.price, r.status, r.cancelled_at, r.cancelled_by
         FROM ${Tables.Reservations} r
             INNER JOIN ${Tables.Subservices} ss ON r.subservice_id = ss.id
             INNER JOIN ${Tables.Services} s on ss.service_id = s.id
