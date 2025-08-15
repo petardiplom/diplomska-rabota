@@ -53,9 +53,10 @@ const overlaps = (slot, block) => {
 };
 
 const isSlotAvailable = (slot, breaks, reservations) => {
-  const result = !breaks.some((b) => overlaps(slot, b));
+  const breaksResult = !breaks.some((b) => overlaps(slot, b));
+  const reservationsResult = !reservations.some((b) => overlaps(slot, b));
 
-  return result;
+  return breaksResult && reservationsResult;
 };
 
 export const getAvailableTimeslots = (

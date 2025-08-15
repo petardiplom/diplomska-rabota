@@ -34,7 +34,7 @@ class StaffService extends BaseService {
 
   async addCenterStaff(center_id, data) {
     if (data.role !== "manager" && data.role !== "staff") {
-      throw new defaultError("400", "Invalid role");
+      throw defaultError("400", "Invalid role");
     }
 
     await this.withTransaction(async (client) => {

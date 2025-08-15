@@ -9,6 +9,7 @@ import staffRoutes from "./routes/staff.js";
 import reservationRoutes from "./routes/reservations.js";
 import customerRoutes from "./routes/customers.js";
 import orderRoutes from "./routes/orders.js";
+import calendarRoutes from "./routes/calendar.js";
 import errorMiddleware from "./middlewares/errorMiddleware.js";
 
 const PORT = 8000;
@@ -25,6 +26,7 @@ app.use("/api", customerRoutes);
 app.use("/api", timeslotRoutes);
 app.use("/api", reservationRoutes);
 app.use("/api", orderRoutes);
+app.use("/api", calendarRoutes);
 
 // 404 handler
 app.use((req, _, next) => {

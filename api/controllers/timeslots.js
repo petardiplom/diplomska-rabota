@@ -5,11 +5,15 @@ import { timeslotsService } from "../services/TimeslotsService.js";
 export const getTimeslots = async (req, res, next) => {
   try {
     const center = req.center;
-    // console.log("REQ QUERY", req.query);
 
-    const { date, staffId } = req.query;
+    const { date, staffId, subserviceId } = req.query;
 
-    const slots = await timeslotsService.getTimeslots(date, center.id, staffId);
+    const slots = await timeslotsService.getTimeslots(
+      date,
+      center.id,
+      staffId,
+      subserviceId
+    );
 
     return res.json(slots);
   } catch (error) {

@@ -65,7 +65,7 @@ const CreateReservation = ({ onClose }) => {
     useStaffSchedule(selectedStaff);
 
   const { data: timeslotOptions = [], isLoading: timeslotsLoading } =
-    useTimeslots(selectedDate, selectedStaff);
+    useTimeslots(selectedDate, selectedStaff, selectedSubservice);
 
   const handleFinish = () => {
     const data = {

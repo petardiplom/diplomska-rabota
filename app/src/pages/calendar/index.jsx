@@ -1,33 +1,18 @@
-import { useState } from "react";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
-import {
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  addHours,
-  addDays,
-  startOfHour,
-  isValid,
-} from "date-fns";
+import { format, parse, startOfWeek, getDay, isBefore } from "date-fns";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import {
-  Box,
-  Typography,
-  Paper,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from "@mui/material";
+import { Box, Typography, Paper } from "@mui/material";
 import enGB from "date-fns/locale/en-GB";
 
 import { useTheme } from "@mui/material/styles";
 import Filters from "./Filters";
+import { CalendarProvider, useCalendar } from "../../contexts/CalendarContext";
+import FullScreenSpinner from "../../components/spinner/FullScreenSpinner";
+import MonthEventComponent from "./eventComponents/MonthEventComponent";
+import { useModal } from "../../contexts/ModalContext";
 
 const locales = {
-  "en-GB": enGB,
+  enGB,
 };
 
 const localizer = dateFnsLocalizer({
@@ -38,74 +23,32 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-const generateDummyReservations = () => {
-  const now = new Date();
-  const today = startOfHour(now);
-
-  return [
-    {
-      id: 1,
-      title: "Team Meeting",
-      start: addHours(today, 2),
-      end: addHours(today, 3),
-      allDay: false,
-      resource: {
-        type: "meeting",
-        participants: ["John", "Jane"],
-        location: "Room 101",
-      },
-    },
-    {
-      id: 2,
-      title: "Lunch Appointment",
-      start: addDays(addHours(today, 12), 1),
-      end: addDays(addHours(today, 13), 1),
-      allDay: false,
-      resource: {
-        type: "meal",
-        participants: ["Client"],
-        location: "Downtown Cafe",
-      },
-    },
-  ];
-};
-
-const safeFormat = (date, formatStr) => {
-  return isValid(date) ? format(date, formatStr) : "Invalid date";
-};
-
 const ReservationCalendar = () => {
-  const [events, setEvents] = useState(generateDummyReservations());
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [newEvent, setNewEvent] = useState(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [currentView, setCurrentView] = useState("month");
+  const {
+    events,
+    currentView,
+    setCurrentView,
+    currentDate,
+    setCurrentDate,
+    isLoading,
+  } = useCalendar();
 
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === "dark";
+  const { openModal } = useModal();
 
   const handleSelectEvent = (event) => {
-    if (isValid(event.start) && isValid(event.end)) {
-      setSelectedEvent(event);
-      setDialogOpen(true);
+    const passedEvent = isBefore(new Date(event.start), new Date());
+    if (passedEvent) {
+      openModal("passedEvent", { event });
+      return;
     }
+
+    openModal("currentEvent", { event });
   };
 
-  const handleSelectSlot = (slotInfo) => {
-    if (isValid(slotInfo.start) && isValid(slotInfo.end)) {
-      setNewEvent({
-        start: slotInfo.start,
-        end: slotInfo.end,
-        title: "",
-        resource: {
-          type: "general",
-          participants: [],
-          location: "",
-        },
-      });
-      setDialogOpen(true);
-    }
+  const handleSelectSlot = () => {
+    openModal("createReservation");
   };
 
   const handleNavigate = (newDate) => {
@@ -116,38 +59,9 @@ const ReservationCalendar = () => {
     setCurrentView(newView);
   };
 
-  const handleCloseDialog = () => {
-    setDialogOpen(false);
-    setSelectedEvent(null);
-    setNewEvent(null);
-  };
-
-  const handleSaveEvent = () => {
-    if (
-      newEvent &&
-      newEvent.title.trim() &&
-      isValid(newEvent.start) &&
-      isValid(newEvent.end)
-    ) {
-      const eventToAdd = {
-        ...newEvent,
-        id: Math.max(...events.map((e) => e.id), 0) + 1,
-        allDay: false,
-      };
-      setEvents([...events, eventToAdd]);
-      handleCloseDialog();
-    }
-  };
-
-  const handleDeleteEvent = () => {
-    if (selectedEvent) {
-      setEvents(events.filter((event) => event.id !== selectedEvent.id));
-      handleCloseDialog();
-    }
-  };
-
   return (
     <Paper elevation={3} sx={{ p: 2, height: "80vh" }}>
+      {isLoading && <FullScreenSpinner open />}
       <Typography variant="h4" mb={3}>
         Reservation Calendar
       </Typography>
@@ -203,6 +117,7 @@ const ReservationCalendar = () => {
 
             "& .rbc-event": {
               borderRadius: "6px",
+              minHeight: "40px",
               boxShadow: isDarkMode
                 ? "0 0 8px 1px rgba(25, 118, 210, 0.6)"
                 : "0 2px 5px rgba(0,0,0,0.15)",
@@ -254,6 +169,7 @@ const ReservationCalendar = () => {
             events={events}
             startAccessor="start"
             endAccessor="end"
+            culture="enGB"
             date={currentDate}
             view={currentView}
             onNavigate={handleNavigate}
@@ -263,23 +179,24 @@ const ReservationCalendar = () => {
             selectable
             onSelectEvent={handleSelectEvent}
             onSelectSlot={handleSelectSlot}
+            components={{
+              month: {
+                event: ({ event }) => <MonthEventComponent event={event} />,
+              },
+            }}
             eventPropGetter={(event) => ({
               style: {
-                backgroundColor:
-                  event.resource.type === "meeting"
-                    ? "#1976d2"
-                    : event.resource.type === "meal"
-                    ? "#2e7d32"
-                    : "#c62828",
+                backgroundColor: event.color,
                 color: "#fff",
                 border: 0,
               },
             })}
+            // popup
           />
         </Box>
       </Box>
 
-      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+      {/* <Dialog open={dialogOpen} onClose={handleCloseDialog}>
         <DialogTitle>
           {selectedEvent ? "Event Details" : "Create New Event"}
         </DialogTitle>
@@ -338,9 +255,14 @@ const ReservationCalendar = () => {
             </Button>
           )}
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </Paper>
   );
 };
 
-export default ReservationCalendar;
+const CalendarContainer = () => (
+  <CalendarProvider>
+    <ReservationCalendar />
+  </CalendarProvider>
+);
+export default CalendarContainer;

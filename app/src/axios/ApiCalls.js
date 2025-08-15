@@ -31,10 +31,10 @@ export const getArchivedCustomers = async () => {
   return response.data;
 };
 
-export const getAvailableTimeslots = async (date, staffId) => {
+export const getAvailableTimeslots = async (date, staffId, subserviceId) => {
   const formatted = format(date, "yyyy-MM-dd");
   const response = await api.get(
-    `/timeslots?date=${formatted}&staffId=${staffId}`
+    `/timeslots?date=${formatted}&staffId=${staffId}&subserviceId=${subserviceId}`
   );
   return response.data;
 };
