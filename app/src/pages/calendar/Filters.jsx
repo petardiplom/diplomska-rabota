@@ -2,10 +2,10 @@ import { Button } from "@mui/material";
 import SelectOption from "../../components/forms/SelectOption";
 import { useModal } from "../../contexts/ModalContext";
 import { useCustomers } from "../../hooks/apiHooks/useCustomers";
-import FullScreenSpinner from "../../components/spinner/FullScreenSpinner";
 import { useServices } from "../../hooks/apiHooks/useServices";
 import { useSubservices } from "../../hooks/apiHooks/useSubservices";
 import { useStaff } from "../../hooks/apiHooks/useStaff";
+import Spinner from "../../components/spinner/Spinner";
 
 const Filters = () => {
   const { openModal } = useModal();
@@ -18,7 +18,7 @@ const Filters = () => {
   const isLoading =
     customersLoading || servicesLoading || subservicesLoading || staffLoading;
   if (isLoading) {
-    return <FullScreenSpinner open={isLoading} />;
+    return <Spinner open={isLoading} />;
   }
 
   const customersOptions =
