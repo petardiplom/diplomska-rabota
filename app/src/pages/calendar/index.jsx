@@ -81,17 +81,9 @@ const ReservationCalendar = () => {
             fontWeight: 500,
 
             "& .rbc-toolbar": {
-              backgroundColor: isDarkMode ? "#1f1f1f" : "#f5f5f5",
-              color: isDarkMode ? "#ffffff" : "#000000",
-              borderBottom: `1px solid ${isDarkMode ? "#444" : "#ddd"}`,
               button: {
                 backgroundColor: isDarkMode ? "#2c2c2c" : "#fff",
                 color: isDarkMode ? "#ddd" : "#333",
-                border: "none",
-                fontWeight: "600",
-                margin: "0 4px",
-                padding: "6px 12px",
-                borderRadius: "4px",
                 "&:hover": {
                   backgroundColor: isDarkMode ? "#3d3d3d" : "#e0e0e0",
                   cursor: "pointer",
@@ -173,12 +165,13 @@ const ReservationCalendar = () => {
             startAccessor="start"
             endAccessor="end"
             culture="enGB"
+            scrollToTime={new Date()}
             date={currentDate}
             view={currentView}
             onNavigate={handleNavigate}
             onView={handleViewChange}
             defaultView="month"
-            views={["month", "week", "day", "agenda"]}
+            views={["month", "week", "day"]}
             selectable
             onSelectEvent={handleSelectEvent}
             onSelectSlot={handleSelectSlot}

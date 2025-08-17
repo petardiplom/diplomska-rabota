@@ -20,10 +20,10 @@ const MonthEventComponent = ({ event }) => {
       <CustomTypography>
         {event.title} - {event.subservice_name}
       </CustomTypography>
+      <CustomTypography>{event.customer_email}</CustomTypography>
       <CustomTypography>
         {`${printTime(event.start)} - ${printTime(event.end)}`}
       </CustomTypography>
-      <CustomTypography>{event.customer_email}</CustomTypography>
     </Box>
   );
 };
