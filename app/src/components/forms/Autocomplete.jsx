@@ -4,6 +4,8 @@ const Autocomplete = ({
   options,
   value,
   onChange,
+  error,
+  helperText,
   label = "Autocomplete",
   size = "small",
   margin = "normal",
@@ -16,7 +18,14 @@ const Autocomplete = ({
       value={value}
       getOptionLabel={(option) => option.label}
       renderInput={(params) => (
-        <TextField {...params} label={label} size={size} margin={margin} />
+        <TextField
+          {...params}
+          label={label}
+          size={size}
+          margin={margin}
+          error={error}
+          helperText={helperText}
+        />
       )}
     />
   );
