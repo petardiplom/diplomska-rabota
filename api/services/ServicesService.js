@@ -98,7 +98,21 @@ class ServicesService extends BaseService {
       "duration",
       "capacity",
     ];
-    return this.insert(Tables.Subservices, data, allowedFields);
+    const sql = `INSERT INTO ${Tables.SubserviceStaff} (subservice_id, center_staff_id) VALUES ($1, $2)`;
+
+    await this.withTransaction(async (client) => {
+      const subservice = await this.insert(
+        Tables.Subservices,
+        data,
+        allowedFields,
+        client
+      );
+
+      for (const staffId of data.staffIds) {
+        await client.query(sql, [subservice.id, staffId]);
+      }
+      return subservice;
+    });
   }
 
   async editSubservice(subserviceId, data) {
@@ -110,9 +124,44 @@ class ServicesService extends BaseService {
       "capacity",
     ];
 
-    return this.update(Tables.Subservices, data, allowedFields, "id = $6", [
-      subserviceId,
-    ]);
+    const newStaffIds = data.staffIds;
+
+    const currentStaffSql = `SELECT center_staff_id FROM ${Tables.SubserviceStaff} WHERE subservice_id = $1`;
+    const deleteSql = `DELETE FROM ${Tables.SubserviceStaff} WHERE subservice_id = $1 AND center_staff_id = ANY($2)`;
+    const insertSql = `INSERT INTO ${Tables.SubserviceStaff} (subservice_id, center_staff_id) VALUES ($1, $2)`;
+
+    await this.withTransaction(async (client) => {
+      const subservice = await this.update(
+        Tables.Subservices,
+        data,
+        allowedFields,
+        "id = $6",
+        [subserviceId],
+        client
+      );
+      const { rows } = await client.query(currentStaffSql, [subserviceId]);
+
+      const currentStaffIds = rows.map((staff) => staff.center_staff_id);
+
+      const staffToDelete = currentStaffIds.filter(
+        (id) => !newStaffIds.includes(id)
+      );
+      const staffToInsert = newStaffIds.filter(
+        (id) => !currentStaffIds.includes(id)
+      );
+
+      if (staffToDelete.length > 0) {
+        await client.query(deleteSql, [subserviceId, staffToDelete]);
+      }
+
+      for (const staffId of staffToInsert) {
+        await client.query(insertSql, [subservice.id, staffId]);
+      }
+
+      return subservice;
+    });
+
+    return;
   }
 
   async toggleServiceStatus(serviceId, status) {

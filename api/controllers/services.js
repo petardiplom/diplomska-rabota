@@ -70,11 +70,22 @@ export const addService = async (req, res, next) => {
 
 export const addSubservice = async (req, res, next) => {
   try {
-    const { serviceId, name, description, price, duration, capacity } =
-      req.body;
+    const {
+      serviceId,
+      name,
+      description,
+      price,
+      duration,
+      capacity,
+      staffIds,
+    } = req.body;
 
     if (!serviceId) {
-      throw new defaultError(400, "Invalid input, no service id");
+      throw defaultError(400, "Invalid input, no service id");
+    }
+
+    if (!staffIds || !staffIds?.length) {
+      throw defaultError(400, "Invalid input, no staff");
     }
 
     const subservice = await servicesService.addSubservice({
@@ -84,6 +95,7 @@ export const addSubservice = async (req, res, next) => {
       price,
       duration,
       capacity,
+      staffIds,
     });
     return res.json(subservice);
   } catch (error) {
@@ -131,7 +143,11 @@ export const editService = async (req, res, next) => {
 export const editSubservice = async (req, res, next) => {
   try {
     const { subserviceId } = req.params;
-    const { name, description, price, duration, capacity } = req.body;
+    const { name, description, price, duration, capacity, staffIds } = req.body;
+
+    if (!staffIds || !staffIds?.length) {
+      throw defaultError(400, "Invalid input, no staff");
+    }
 
     const subservice = await servicesService.editSubservice(subserviceId, {
       name,
@@ -139,6 +155,7 @@ export const editSubservice = async (req, res, next) => {
       price,
       duration,
       capacity,
+      staffIds,
     });
     return res.json(subservice);
   } catch (error) {
