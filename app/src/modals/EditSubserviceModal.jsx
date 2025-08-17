@@ -82,6 +82,7 @@ export default function EditSubserviceModal({
     if (!formData.price) newErrors.price = true;
     if (!formData.duration) newErrors.duration = true;
     if (!formData.capacity) newErrors.capacity = true;
+    if (!selectedStaff.length) newErrors.staff = true;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -90,9 +91,10 @@ export default function EditSubserviceModal({
     if (!validate()) {
       return;
     }
+    const staffIds = selectedStaff?.map((x) => x.value);
     if (!subservice) {
       addSubservice(
-        { serviceId: service.id, ...formData },
+        { serviceId: service.id, ...formData, staffIds },
         {
           onSuccess: () => {
             refetchChildren();
@@ -102,7 +104,7 @@ export default function EditSubserviceModal({
       );
     } else {
       editSubservice(
-        { subserviceId: subservice.id, data: formData },
+        { subserviceId: subservice.id, data: { ...formData, staffIds } },
         {
           onSuccess: () => {
             refetchChildren();
@@ -186,6 +188,8 @@ export default function EditSubserviceModal({
           onChange={(_, val) => setSelectedStaff(val)}
           value={selectedStaff}
           options={staffOptions}
+          error={!!errors.staff}
+          helperText={errors.staff ? "Staff is required" : ""}
           size="small"
         />
 

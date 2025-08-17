@@ -52,12 +52,19 @@ class CenterService extends BaseService {
         allowedFields,
         client
       );
-      await this.insert(
+
+      const staff = await this.insert(
         Tables.CenterStaff,
         { center_id: center.id, user_id: data.owner_id, role: "owner" },
         ["center_id", "user_id", "role"],
         client
       );
+
+      // create center schedule
+      await this.createGeneralSchedule(center.id, null, client);
+      // create owner schedule
+      await this.createGeneralSchedule(center.id, staff.id, client);
+
       return center;
     });
   }

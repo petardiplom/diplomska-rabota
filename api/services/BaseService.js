@@ -91,6 +91,22 @@ export class BaseService {
     );
   }
 
+  async createGeneralSchedule(center_id, staff_id = null, client = this.db) {
+    const scheduleSql = `
+      INSERT INTO ${Tables.Schedules} (center_id, center_staff_id, day_of_week, is_closed, work_start, work_end)
+        VALUES 
+          ($1, $2, 1, FALSE, '09:00', '17:00'),
+          ($1, $2, 2, FALSE, '09:00', '17:00'),
+          ($1, $2, 3, FALSE, '09:00', '17:00'),
+          ($1, $2, 4, FALSE, '09:00', '17:00'),
+          ($1, $2, 5, FALSE, '09:00', '17:00'),
+          ($1, $2, 6, FALSE, '09:00', '17:00'),
+          ($1, $2, 7, FALSE, '09:00', '17:00');
+    `;
+
+    return client.query(scheduleSql, [center_id, staff_id]);
+  }
+
   async createOrder(
     center_id,
     customer_id,

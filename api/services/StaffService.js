@@ -72,12 +72,16 @@ class StaffService extends BaseService {
           client
         );
 
-        await this.insert(
+        // TODO ADD SCHEDULE TO STAFF
+        const staff = await this.insert(
           Tables.CenterStaff,
           { center_id: center_id, user_id: user.id, role: data.role },
           ["center_id", "user_id", "role"],
           client
         );
+
+        await this.createGeneralSchedule(center_id, staff.id, client);
+
         return user;
       } catch (error) {
         if (isNewUser && firebaseUser?.uid) {
