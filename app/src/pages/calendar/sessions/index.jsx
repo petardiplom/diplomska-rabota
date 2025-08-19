@@ -31,8 +31,8 @@ import {
   useStaffSchedule,
 } from "../../../hooks/apiHooks/useCenterSchedule";
 import { useTimeslots } from "../../../hooks/apiHooks/useTimeslots";
-import { useCreateReservation } from "../../../hooks/apiHooks/useReservations";
 import { disabledDays, mergeDateWithTimeslot } from "../utils";
+import { useCreateSession } from "../../../hooks/apiHooks/useSessions";
 
 const steps = ["Service | Subservice", "Staff | Time period"];
 
@@ -48,7 +48,7 @@ const CreateSession = ({ onClose }) => {
 
   const [subserviceObject, setSubjserviceObject] = useState({});
 
-  const { mutate: createReservation } = useCreateReservation();
+  const { mutate: createSession } = useCreateSession();
 
   const { data: services, isLoading: servicesLoading } = useServices();
   const { data: subservices, isLoading: subservicesLoading } = useSubservices();
@@ -85,9 +85,10 @@ const CreateSession = ({ onClose }) => {
       price: subserviceObject.price,
       duration: subserviceObject.duration,
       date: printInputDate(selectedDate),
+      capacity: selectedCapacity,
       timeslot: selectedTimeslot,
     };
-    createReservation(data, {
+    createSession(data, {
       onSuccess: () => {
         onClose();
       },
