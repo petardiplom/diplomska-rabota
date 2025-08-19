@@ -3,4 +3,5 @@ CREATE TYPE staff_role AS ENUM ('owner', 'manager', 'staff');
 CREATE TYPE image_type AS ENUM ('profile', 'gallery');
 CREATE TYPE reservation_status AS ENUM ('active', 'cancelled');
 CREATE TYPE subscription_status AS ENUM ('active', 'cancelled', 'waiting_list');
+CREATE TYPE session_status AS ENUM ('active', 'cancelled');
 CREATE TYPE payment_method AS ENUM ('cash', 'card', 'online');

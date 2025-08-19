@@ -3,6 +3,7 @@ import AddCenterModal from "./AddCenterModal";
 import AddStaffModal from "./AddCenterStaff";
 import AddCustomerModal from "./AddCustomerModal";
 import AddReservationModal from "./AddReservationModal";
+import AddSessionModal from "./AddSessionModal";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import CurrentEventModal from "./CurrentEventModal";
 import EditCustomerModal from "./EditCustomerModal";
@@ -20,6 +21,7 @@ const MODAL_COMPONENTS = {
   previewImage: ImageModal,
   uploadImage: UploadImageModal,
   createReservation: AddReservationModal,
+  createSession: AddSessionModal,
   addCustomer: AddCustomerModal,
   editCustomer: EditCustomerModal,
   addStaff: AddStaffModal,

@@ -8,7 +8,7 @@ import { useTheme } from "@mui/material/styles";
 import Filters from "./Filters";
 import { CalendarProvider, useCalendar } from "../../contexts/CalendarContext";
 import FullScreenSpinner from "../../components/spinner/FullScreenSpinner";
-import MonthEventComponent from "./eventComponents/MonthEventComponent";
+import MonthEventComponent from "./components/MonthEventComponent";
 import { useModal } from "../../contexts/ModalContext";
 
 const locales = {

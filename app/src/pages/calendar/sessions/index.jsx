@@ -8,10 +8,10 @@ import {
   Typography,
   Divider,
   Grid,
+  TextField,
 } from "@mui/material";
 import { QontoConnector, QontoStepIcon } from "../components/stepperComponents";
 import SelectOption from "../../../components/forms/SelectOption";
-import { useCustomers } from "../../../hooks/apiHooks/useCustomers";
 import { useServices } from "../../../hooks/apiHooks/useServices";
 import { useSubservices } from "../../../hooks/apiHooks/useSubservices";
 import { useSubserviceStaff } from "../../../hooks/apiHooks/useStaff";
@@ -34,21 +34,22 @@ import { useTimeslots } from "../../../hooks/apiHooks/useTimeslots";
 import { useCreateReservation } from "../../../hooks/apiHooks/useReservations";
 import { disabledDays, mergeDateWithTimeslot } from "../utils";
 
-const steps = ["Customer | Service | Subservice", "Staff | Time period"];
+const steps = ["Service | Subservice", "Staff | Time period"];
 
-const CreateReservation = ({ onClose }) => {
+const CreateSession = ({ onClose }) => {
   const [activeStep, setActiveStep] = useState(0);
 
-  const [selectedCustomer, setSelectedCustomer] = useState("");
   const [selectedService, setSelectedService] = useState("");
   const [selectedSubservice, setSelectedSubservice] = useState("");
+  const [selectedCapacity, setSelectedCapacity] = useState("");
   const [selectedStaff, setSelectedStaff] = useState("");
   const [selectedTimeslot, setSelectedTimeslot] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
 
+  const [subserviceObject, setSubjserviceObject] = useState({});
+
   const { mutate: createReservation } = useCreateReservation();
 
-  const { data: customers, isLoading: customersLoading } = useCustomers();
   const { data: services, isLoading: servicesLoading } = useServices();
   const { data: subservices, isLoading: subservicesLoading } = useSubservices();
   const { data: centerSchedule, isLoading: centerScheduleLoading } =
@@ -63,9 +64,22 @@ const CreateReservation = ({ onClose }) => {
   const { data: timeslotOptions = [], isLoading: timeslotsLoading } =
     useTimeslots(selectedDate, selectedStaff, selectedSubservice);
 
+  const handleSelectedSubservice = (e) => {
+    setSelectedSubservice(e.target.value);
+    const subserviceObj =
+      subservices?.find((x) => x.id === e.target.value) || {};
+
+    if (subserviceObj.capacity) {
+      setSelectedCapacity(subserviceObj.capacity || 1);
+    }
+    setSubjserviceObject(subserviceObj);
+    setSelectedStaff("");
+    setSelectedTimeslot("");
+    setSelectedDate(null);
+  };
+
   const handleFinish = () => {
     const data = {
-      customer_id: selectedCustomer,
       subservice_id: selectedSubservice,
       staff_id: selectedStaff,
       price: subserviceObject.price,
@@ -95,7 +109,7 @@ const CreateReservation = ({ onClose }) => {
   );
 
   const isStepComplete = [
-    !!selectedCustomer && !!selectedService && !!selectedSubservice,
+    !!selectedService && !!selectedSubservice && Number(selectedCapacity),
     !!selectedStaff && !!selectedDate && !!selectedTimeslot,
   ];
 
@@ -104,13 +118,6 @@ const CreateReservation = ({ onClose }) => {
       case 0:
         return (
           <>
-            <SelectOption
-              required
-              label="Customer"
-              value={selectedCustomer}
-              onChange={(e) => setSelectedCustomer(e.target.value)}
-              options={customersOptions}
-            />
             <SelectOption
               required
               label="Service"
@@ -126,14 +133,27 @@ const CreateReservation = ({ onClose }) => {
               required
               label="Subservice"
               value={selectedSubservice}
-              onChange={(e) => {
-                setSelectedSubservice(e.target.value);
-                setSelectedStaff("");
-                setSelectedTimeslot("");
-                setSelectedDate(null);
-              }}
+              onChange={handleSelectedSubservice}
               options={subservicesOptions}
               noOptionsMessage="Selected service has no subservices"
+            />
+
+            <TextField
+              size="small"
+              label="Capacity"
+              type="number"
+              name="capacity"
+              fullWidth
+              value={selectedCapacity}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                if (value >= 1 || e.target.value === "") {
+                  setSelectedCapacity(e.target.value);
+                }
+              }}
+              slotProps={{
+                htmlInput: { min: 1 },
+              }}
             />
           </>
         );
@@ -190,20 +210,9 @@ const CreateReservation = ({ onClose }) => {
     }
   };
 
-  if (
-    customersLoading ||
-    servicesLoading ||
-    subservicesLoading ||
-    centerScheduleLoading
-  ) {
+  if (servicesLoading || subservicesLoading || centerScheduleLoading) {
     return <LoadingComponent />;
   }
-
-  const customersOptions =
-    customers?.map((customer) => ({
-      value: customer.id,
-      label: `${customer.email} - (${customer.firstname} ${customer.lastname})`,
-    })) || [];
 
   const servicesOptions =
     services?.map((service) => ({
@@ -224,10 +233,6 @@ const CreateReservation = ({ onClose }) => {
       value: staff.id,
       label: staff.email,
     })) || [];
-
-  const subserviceObject = selectedSubservice
-    ? subservices?.find((x) => x.id === selectedSubservice) || {}
-    : {};
 
   const selectedDateTime =
     selectedDate && selectedTimeslot
@@ -278,10 +283,6 @@ const CreateReservation = ({ onClose }) => {
 
             <Grid container spacing={2}>
               {[
-                {
-                  label: "Customer",
-                  value: getLabel(customers, selectedCustomer, "email"),
-                },
                 {
                   label: "Service",
                   value: getLabel(services, selectedService),
@@ -358,4 +359,4 @@ const CreateReservation = ({ onClose }) => {
   );
 };
 
-export default CreateReservation;
+export default CreateSession;

@@ -4,41 +4,40 @@ import { useCenter } from "../../contexts/CenterContext";
 import { toast } from "react-toastify";
 import { CALENDAR_EVENTS_QUERY_KEY } from "./useCalendarEvents";
 
-const RESERVATIONS_QUERY_KEY = "reservations";
+const SESSIONS_QUERY_KEY = "sessions";
 
-export const useCreateReservation = () => {
+export const useCreateSession = () => {
   const queryClient = useQueryClient();
   const { centerId } = useCenter();
 
   return useMutation({
     mutationFn: (data) => {
-      return api.post("/reservations", data);
+      return api.post("/sessions", data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [RESERVATIONS_QUERY_KEY, centerId],
+        queryKey: [SESSIONS_QUERY_KEY, centerId],
       });
       queryClient.invalidateQueries({
         queryKey: [CALENDAR_EVENTS_QUERY_KEY, centerId],
       });
-      toast.success("Reservation created!");
+      toast.success("Session created!");
     },
   });
 };
 
-export const useCancelReservation = () => {
+export const useCancelSession = () => {
   const { centerId } = useCenter();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ reservationId }) =>
-      api.patch(`/reservations/${reservationId}/cancel`),
+    mutationFn: ({ sessionId }) => api.patch(`/sessions/${sessionId}/cancel`),
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: [CALENDAR_EVENTS_QUERY_KEY, centerId],
         }),
       ]);
-      toast.success("Reservation cancelled!");
+      toast.success("Session cancelled!");
     },
   });
 };

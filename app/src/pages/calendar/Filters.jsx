@@ -5,6 +5,7 @@ import { useCustomers } from "../../hooks/apiHooks/useCustomers";
 import { useServices } from "../../hooks/apiHooks/useServices";
 import { useSubservices } from "../../hooks/apiHooks/useSubservices";
 import { useStaff } from "../../hooks/apiHooks/useStaff";
+import AddIcon from "@mui/icons-material/Add";
 import Spinner from "../../components/spinner/Spinner";
 
 const Filters = () => {
@@ -73,12 +74,24 @@ const Filters = () => {
       />
       <Button
         variant="contained"
+        startIcon={<AddIcon />}
         color="secondary"
         fullWidth
         size="small"
+        sx={{ marginBottom: 1 }}
         onClick={() => openModal("createReservation")}
       >
         Reservation
+      </Button>
+      <Button
+        variant="contained"
+        startIcon={<AddIcon />}
+        color="secondary"
+        fullWidth
+        size="small"
+        onClick={() => openModal("createSession")}
+      >
+        Session
       </Button>
     </>
   );
