@@ -11,5 +11,6 @@ export const Tables = {
   ScheduleBreaks: "work_breaks ",
   Reservations: "reservations",
   Subscriptions: "subscriptions",
+  Sessions: "sessions",
   Orders: "customer_orders",
 };

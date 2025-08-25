@@ -14,18 +14,41 @@ const CustomTypography = ({ children }) => (
   </Typography>
 );
 
+const Reservation = ({ event }) => (
+  <Box display="flex" flexDirection="column">
+    <CustomTypography>
+      {event.title} - {event.subservice_name}
+    </CustomTypography>
+    <CustomTypography>{event.customer_email}</CustomTypography>
+    <CustomTypography>
+      {`${printTime(event.start)} - ${printTime(event.end)}`}
+    </CustomTypography>
+  </Box>
+);
+
+const Session = ({ event }) => (
+  <Box display="flex" flexDirection="column">
+    <CustomTypography>{`Capacity: ${event.current_capacity}/${event.capacity}`}</CustomTypography>
+    <CustomTypography>
+      {event.title} - {event.subservice_name}
+    </CustomTypography>
+    <CustomTypography>
+      {`${printTime(event.start)} - ${printTime(event.end)}`}
+    </CustomTypography>
+  </Box>
+);
+
+const getComponentByType = (event) => {
+  if (event.type === "reservation") {
+    return <Reservation event={event} />;
+  }
+  if (event.type === "session") {
+    return <Session event={event} />;
+  }
+};
+
 const MonthEventComponent = ({ event }) => {
-  return (
-    <Box display="flex" flexDirection="column">
-      <CustomTypography>
-        {event.title} - {event.subservice_name}
-      </CustomTypography>
-      <CustomTypography>{event.customer_email}</CustomTypography>
-      <CustomTypography>
-        {`${printTime(event.start)} - ${printTime(event.end)}`}
-      </CustomTypography>
-    </Box>
-  );
+  return getComponentByType(event);
 };
 
 export default MonthEventComponent;

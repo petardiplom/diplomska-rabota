@@ -39,12 +39,21 @@ const ReservationCalendar = () => {
 
   const handleSelectEvent = (event) => {
     const passedEvent = isBefore(new Date(event.start), new Date());
-    if (passedEvent) {
-      openModal("passedEvent", { event });
-      return;
-    }
+    const isReservation = event.type === "reservation";
 
-    openModal("currentEvent", { event });
+    if (isReservation) {
+      if (passedEvent) {
+        openModal("passedReservation", { event });
+        return;
+      }
+      openModal("currentReservation", { event });
+    } else {
+      if (passedEvent) {
+        openModal("passedSession", { event });
+        return;
+      }
+      openModal("currentSession", { event });
+    }
   };
 
   const handleSelectSlot = () => {

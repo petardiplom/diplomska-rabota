@@ -5,7 +5,8 @@ import AddCustomerModal from "./AddCustomerModal";
 import AddReservationModal from "./AddReservationModal";
 import AddSessionModal from "./AddSessionModal";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
-import CurrentEventModal from "./CurrentEventModal";
+import CurrentReservationModal from "./CurrentReservationModal";
+import CurrentSessionModal from "./CurrentSessionModal";
 import EditCustomerModal from "./EditCustomerModal";
 import EditServiceModal from "./EditServiceModal";
 import EditSubserviceModal from "./EditSubserviceModal";
@@ -25,8 +26,10 @@ const MODAL_COMPONENTS = {
   addCustomer: AddCustomerModal,
   editCustomer: EditCustomerModal,
   addStaff: AddStaffModal,
-  currentEvent: CurrentEventModal,
-  passedEvent: PassedEventModal,
+  currentReservation: CurrentReservationModal,
+  currentSession: CurrentSessionModal,
+  passedReservation: PassedEventModal,
+  passedSession: PassedEventModal,
 };
 
 const GlobalModals = () => {

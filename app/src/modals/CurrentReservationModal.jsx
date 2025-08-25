@@ -14,16 +14,9 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useStaff } from "../hooks/apiHooks/useStaff";
 import { useState } from "react";
+import CustomTitleSubtitle from "../components/reservations_sessions/CustomTitleSubtitle";
 
-const CustomTitleSubtitle = ({ primary, secondary }) => (
-  <Box margin={1}>
-    <Typography variant="subtitle2" color="textSecondary">
-      {primary}
-    </Typography>
-    <Typography variant="body1">{secondary}</Typography>
-  </Box>
-);
-const CurrentEventModal = ({ open, onClose, event }) => {
+const CurrentReservationModal = ({ open, onClose, event }) => {
   const [confirm, setConfirm] = useState(false);
 
   const { mutate } = useCancelReservation();
@@ -122,17 +115,12 @@ const CurrentEventModal = ({ open, onClose, event }) => {
               <Button
                 key="confirm-button"
                 onClick={handleCancel}
-                variant="outlined"
                 color="error"
                 disabled={event.status === "cancelled"}
               >
                 Confirm
               </Button>
-              <Button
-                key="decline-button"
-                variant="outlined"
-                onClick={() => setConfirm(false)}
-              >
+              <Button key="decline-button" onClick={() => setConfirm(false)}>
                 Decline
               </Button>
             </>
@@ -141,13 +129,12 @@ const CurrentEventModal = ({ open, onClose, event }) => {
               <Button
                 key="cancel-button"
                 onClick={() => setConfirm(true)}
-                variant="outlined"
                 color="error"
                 disabled={event.status === "cancelled"}
               >
                 Cancel reservation
               </Button>
-              <Button key="close-button" variant="outlined" onClick={onClose}>
+              <Button key="close-button" onClick={onClose}>
                 Close
               </Button>
             </>
@@ -158,4 +145,4 @@ const CurrentEventModal = ({ open, onClose, event }) => {
   );
 };
 
-export default CurrentEventModal;
+export default CurrentReservationModal;
