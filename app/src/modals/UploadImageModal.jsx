@@ -10,15 +10,18 @@ import {
   LinearProgress,
 } from "@mui/material";
 import Dropzone from "../components/dropzone";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ImageIcon from "@mui/icons-material/Image";
 import { formatFileName, formatFileSize } from "../utils/stringUtils";
-import { useUpload } from "../contexts/UploadContext";
 
 const UploadImageModal = ({ open, onClose }) => {
   // const { centerId } = useCenter();
-  const { uploadState, resetUploadState } = useUpload();
+  // const { uploadState, resetUploadState } = useUpload();
   // const { uploadImage } = useUploadImage();
+  const uploadState = {
+    uploading: false,
+    progress: 44,
+  };
   const [ls, setLs] = useState({});
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -38,9 +41,9 @@ const UploadImageModal = ({ open, onClose }) => {
     // }
   };
 
-  useEffect(() => {
-    return () => resetUploadState();
-  });
+  // useEffect(() => {
+  //   return () => resetUploadState();
+  // });
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
