@@ -47,6 +47,9 @@ export const useAddSubscription = () => {
       api.post(`/sessions/${sessionId}/subscription`, { customerId }),
     onSuccess: async () => {
       queryClient.invalidateQueries({
+        queryKey: [CALENDAR_EVENTS_QUERY_KEY, centerId],
+      });
+      queryClient.invalidateQueries({
         queryKey: [SESSION_SUBSCRIPTION_QUERY_KEY, centerId],
       });
       toast.success("Subscription added!");

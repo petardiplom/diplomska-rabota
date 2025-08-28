@@ -28,7 +28,7 @@ const Reservation = ({ event }) => (
 
 const Session = ({ event }) => (
   <Box display="flex" flexDirection="column">
-    <CustomTypography>{`Capacity: ${event.current_capacity}/${event.capacity}`}</CustomTypography>
+    <CustomTypography>{`Capacity: ${event.active_count}/${event.capacity}`}</CustomTypography>
     <CustomTypography>
       {event.title} - {event.subservice_name}
     </CustomTypography>
